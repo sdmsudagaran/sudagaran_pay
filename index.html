@@ -86,11 +86,9 @@
                         <p class="text-xs font-medium text-gray-500 mb-1">Assalamu'alaikum,</p>
                         <h2 class="text-lg font-bold text-primary wrap-text" id="home-user-name">Ayah/Bunda</h2>
                     </div>
-                    <div class="relative flex-shrink-0">
-                        <div class="w-12 h-12 rounded-full border-2 border-white shadow-sm bg-white flex items-center justify-center overflow-hidden">
-                            <img src="https://iili.io/nHwYAuV.png" alt="Profile" class="w-8 h-8 object-contain">
-                        </div>
-                        <div class="absolute -bottom-1 -right-1 bg-accent text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white" id="home-student-class">-</div>
+                    <!-- LOGO KECIL DIHAPUS - HANYA BADGE KELAS SAJA -->
+                    <div class="flex-shrink-0 pt-2">
+                        <div class="bg-accent text-white text-[10px] font-bold px-3 py-1.5 rounded-full border-2 border-white shadow-sm text-center max-w-[90px] wrap-text uppercase" id="home-student-class">-</div>
                     </div>
                 </div>
                 <div class="mt-4 flex items-center gap-2 text-sm text-gray-600 bg-gray-50 p-2 rounded-lg border border-gray-100">
@@ -138,7 +136,7 @@
                     <span class="bg-red-500 text-white text-[10px] font-bold px-3 py-1 rounded-full border border-red-400">MODE ADMIN</span>
                 </div>
                 <h2 class="text-xl font-bold mb-1">Kelola Fitur Menu</h2>
-                <p class="text-xs text-blue-200">Atur menu aplikasi untuk wali murid</p>
+                <p class="text-xs text-blue-200">Atur menu dan urutan posisi aplikasi</p>
             </div>
             <div class="px-6">
                 <div class="flex justify-end mb-4">
@@ -416,7 +414,15 @@
         const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRTbkov_lwEit8zx4ZDnejhi5FvGXTFAp4xxDM-NinByMm9QVQuRK2ssk9GCtKaaItXwBKo1nqU0c9q/pub?gid=0&single=true&output=csv';
         const GAS_URL = 'https://script.google.com/macros/s/AKfycbwt7ctBKsBS63kSgJ5fUzIae3cd3ZPG16chkhxcdDt65iDLB0DD36ESSQn95RHnjPeK/exec';
         
-        const PRESET_ICONS = ['fa-graduation-cap', 'fa-book', 'fa-shirt', 'fa-store', 'fa-bus', 'fa-utensils', 'fa-mosque', 'fa-laptop', 'fa-futbol', 'fa-medal', 'fa-file-invoice-dollar', 'fa-wallet', 'fa-money-bill', 'fa-history', 'fa-users', 'fa-calendar-alt', 'fa-chart-bar', 'fa-bullhorn', 'fa-star', 'fa-heart'];
+        // Ikon tambahan untuk pendidikan dan keuangan
+        const PRESET_ICONS = [
+            'fa-graduation-cap', 'fa-book', 'fa-shirt', 'fa-store', 'fa-bus', 'fa-utensils', 'fa-mosque', 
+            'fa-laptop', 'fa-futbol', 'fa-medal', 'fa-file-invoice-dollar', 'fa-wallet', 'fa-money-bill', 
+            'fa-history', 'fa-users', 'fa-calendar-alt', 'fa-chart-bar', 'fa-bullhorn', 'fa-star', 'fa-heart',
+            'fa-calculator', 'fa-school', 'fa-piggy-bank', 'fa-coins', 'fa-receipt', 'fa-quran', 'fa-pray', 
+            'fa-hands-helping', 'fa-hand-holding-usd', 'fa-chalkboard-teacher', 'fa-globe', 'fa-palette', 
+            'fa-music', 'fa-flask'
+        ];
 
         let appDB = {
             userRole: 'guest',
@@ -629,8 +635,12 @@
 
             if(screenId === 'screen-admin-dashboard') {
                 let al = document.getElementById('admin-menu-list'); al.innerHTML = '';
-                appDB.menuItems.forEach(m => {
-                    let c = m.color.split('|'); al.innerHTML += `<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-3 flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-lg ${c[1]} flex items-center justify-center ${c[0]}"><i class="fas ${m.icon} text-lg"></i></div><div><h4 class="font-bold text-sm text-gray-800">${m.title}</h4></div></div><button onclick="editMenu(${m.id})" class="text-xs font-bold text-primary px-3 py-1.5 bg-blue-50 rounded-lg">Edit</button></div>`;
+                appDB.menuItems.forEach((m, index) => {
+                    let c = m.color.split('|'); 
+                    let upBtn = index > 0 ? `<button onclick="moveMenu(${index}, -1)" class="text-gray-400 hover:text-primary px-2 transition"><i class="fas fa-arrow-up"></i></button>` : `<div class="w-7"></div>`;
+                    let downBtn = index < appDB.menuItems.length - 1 ? `<button onclick="moveMenu(${index}, 1)" class="text-gray-400 hover:text-primary px-2 transition"><i class="fas fa-arrow-down"></i></button>` : `<div class="w-7"></div>`;
+                    
+                    al.innerHTML += `<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-3 flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-lg ${c[1]} flex items-center justify-center ${c[0]}"><i class="fas ${m.icon} text-lg"></i></div><div><h4 class="font-bold text-sm text-gray-800">${m.title}</h4></div></div><div class="flex items-center">${upBtn}${downBtn}<button onclick="editMenu(${m.id})" class="text-xs font-bold text-primary px-3 py-1.5 bg-blue-50 rounded-lg ml-2">Edit</button></div></div>`;
                 });
             }
             document.getElementById('app-container').scrollTop = 0;
@@ -689,6 +699,15 @@
                 appDB.history.unshift({ id: document.getElementById('receipt-tx').innerText, date: paymentDataPayload.date, title: document.getElementById('receipt-title').innerText, amount: parseInt(document.getElementById('checkout-total').innerText.replace(/[^0-9]/g,"")), status: 'pending', details: [] });
                 showScreen('screen-receipt');
             }).catch(()=> { showMessageBox('Gagal', 'Terjadi kesalahan.', 'fa-times', 'bg-red-50 text-danger'); });
+        }
+
+        function moveMenu(index, direction) {
+            if (index + direction < 0 || index + direction >= appDB.menuItems.length) return;
+            let temp = appDB.menuItems[index];
+            appDB.menuItems[index] = appDB.menuItems[index + direction];
+            appDB.menuItems[index + direction] = temp;
+            localStorage.setItem('adminMenu', JSON.stringify(appDB.menuItems));
+            showScreen('screen-admin-dashboard');
         }
 
         function openMenuModal() {
