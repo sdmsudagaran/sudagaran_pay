@@ -8,85 +8,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        primary: '#1E3A5F',
-                        accent: '#F59E0B',
-                        bglight: '#F8FAFC',
-                        success: '#22C55E',
-                        danger: '#EF4444',
-                        cardbg: '#FFFFFF',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    boxShadow: {
-                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
-                        'float': '0 -4px 20px -2px rgba(0, 0, 0, 0.05)',
-                    }
+                    colors: { primary: '#1E3A5F', accent: '#F59E0B', bglight: '#F8FAFC', success: '#22C55E', danger: '#EF4444', cardbg: '#FFFFFF' },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    boxShadow: { 'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)' }
                 }
             }
         }
     </script>
 
     <style>
-        body {
-            background-color: #e2e8f0; 
-            display: flex;
-            justify-content: center;
-            font-family: 'Inter', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-            margin: 0;
-            padding: 0;
-        }
-        
-        #app-container {
-            width: 100%;
-            max-width: 414px; 
-            min-height: 100vh;
-            background-color: #F8FAFC;
-            position: relative;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-            overflow-x: hidden;
-            overflow-y: auto;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        #app-container::-webkit-scrollbar {
-            display: none;
-        }
-
-        .screen {
-            display: none;
-            animation: fadeIn 0.3s ease-in-out;
-            padding-bottom: 90px;
-        }
-        .screen.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .bg-gradient-primary {
-            background: linear-gradient(135deg, #1E3A5F 0%, #2A528A 100%);
-        }
-
-        .islamic-pattern {
-            background-image: radial-gradient(#F59E0B 1px, transparent 1px);
-            background-size: 20px 20px;
-            opacity: 0.05;
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            pointer-events: none;
-        }
+        body { background-color: #e2e8f0; display: flex; justify-content: center; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+        #app-container { width: 100%; max-width: 414px; min-height: 100vh; background-color: #F8FAFC; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.1); overflow-x: hidden; overflow-y: auto; scrollbar-width: none; }
+        #app-container::-webkit-scrollbar { display: none; }
+        .screen { display: none; animation: fadeIn 0.3s ease-in-out; padding-bottom: 80px; }
+        .screen.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .bg-gradient-primary { background: linear-gradient(135deg, #1E3A5F 0%, #2A528A 100%); }
+        .islamic-pattern { background-image: radial-gradient(#F59E0B 1px, transparent 1px); background-size: 20px 20px; opacity: 0.05; position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; }
+        .wrap-text { word-wrap: break-word; white-space: normal; line-height: 1.2; }
     </style>
 </head>
 <body class="text-gray-800">
@@ -107,159 +52,146 @@
                     <div class="bg-white rounded-3xl shadow-soft p-6 border border-gray-100">
                         <form id="loginForm" onsubmit="event.preventDefault(); handleLogin();">
                             <div class="mb-5">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">NIS Siswa</label>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">NIS</label>
                                 <div class="relative">
-                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                                        <i class="fas fa-user"></i>
-                                    </span>
-                                    <input type="text" id="loginId" class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition" placeholder="Masukkan NIS Anda" required>
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"><i class="fas fa-user"></i></span>
+                                    <input type="text" id="loginId" class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-primary transition" placeholder="Masukkan NIS Anda" required>
                                 </div>
                             </div>
                             <div class="mb-6">
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
                                 <div class="relative">
-                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                                        <i class="fas fa-lock"></i>
-                                    </span>
-                                    <input type="password" id="loginPass" class="w-full pl-10 pr-10 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition" placeholder="Masukkan Password" required>
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"><i class="fas fa-lock"></i></span>
+                                    <input type="password" id="loginPass" class="w-full pl-10 pr-10 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-primary transition" placeholder="Masukkan Password" required>
                                     <button type="button" onclick="togglePassword()" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-primary transition">
-                                        <i class="fas fa-eye" id="toggleIcon"></i>
+                                        <i class="fas fa-eye" id="eyeIcon"></i>
                                     </button>
                                 </div>
                             </div>
-                            <button type="submit" class="w-full bg-primary hover:bg-opacity-90 text-white font-semibold py-3.5 rounded-xl transition shadow-md">
-                                Masuk
-                            </button>
+                            <button type="submit" class="w-full bg-primary hover:bg-opacity-90 text-white font-semibold py-3.5 rounded-xl transition shadow-md">Masuk</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ==================== HOME SCREEN (WALI MURID) ==================== -->
+        <!-- ==================== HOME SCREEN ==================== -->
         <div id="screen-home" class="screen">
-            <!-- Header Profile -->
             <div class="bg-white rounded-b-3xl shadow-sm px-6 pt-8 pb-6 relative z-10">
                 <div class="flex justify-center items-center mb-6">
-                    <img src="https://iili.io/nHwYAuV.png" alt="Sudagaran Logo" class="h-10 w-auto object-contain">
+                    <img src="https://iili.io/nHwYAuV.png" alt="Logo" class="h-10 w-auto object-contain">
                 </div>
-                <div class="flex justify-between items-center">
-                    <div class="flex-1 pr-4">
+                <div class="flex justify-between items-start gap-2">
+                    <div class="flex-1">
                         <p class="text-xs font-medium text-gray-500 mb-1">Assalamu'alaikum,</p>
-                        <h2 class="text-lg font-bold text-primary break-words" id="home-user-name" style="line-height: 1.2;">Ayah/Bunda</h2>
+                        <h2 class="text-lg font-bold text-primary wrap-text" id="home-user-name">Ayah/Bunda</h2>
                     </div>
-                    <div class="relative shrink-0">
-                        <div class="w-14 h-14 bg-white rounded-full border-2 border-white shadow-sm flex items-center justify-center p-1">
-                            <img src="https://iili.io/nHwYAuV.png" alt="Profile" class="w-full h-full object-contain">
+                    <div class="relative flex-shrink-0">
+                        <div class="w-12 h-12 rounded-full border-2 border-white shadow-sm bg-white flex items-center justify-center overflow-hidden">
+                            <img src="https://iili.io/nHwYAuV.png" alt="Profile" class="w-8 h-8 object-contain">
                         </div>
-                        <div class="absolute -bottom-2 right-1/2 translate-x-1/2 bg-accent text-white text-[10px] font-bold px-2 py-0.5 rounded-full border-2 border-white shadow-sm" id="home-student-class">
-                            -
-                        </div>
+                        <div class="absolute -bottom-1 -right-1 bg-accent text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white" id="home-student-class">-</div>
                     </div>
                 </div>
                 <div class="mt-4 flex items-center gap-2 text-sm text-gray-600 bg-gray-50 p-2 rounded-lg border border-gray-100">
                     <i class="fas fa-child text-primary"></i>
-                    <span id="home-student-info" class="font-medium">-</span>
+                    <span id="home-student-info" class="font-medium wrap-text line-clamp-1">Siswa</span>
                 </div>
             </div>
 
-            <!-- Balance Card -->
             <div class="px-5 -mt-4 relative z-20">
                 <div class="bg-gradient-primary rounded-2xl p-5 shadow-lg text-white overflow-hidden relative">
                     <div class="islamic-pattern opacity-10"></div>
-                    
                     <div class="flex justify-between items-start mb-4 relative z-10">
                         <div>
                             <p class="text-sm text-blue-100 opacity-90">Total Tagihan Aktif</p>
                             <h3 class="text-2xl font-bold mt-1" id="home-total-bill">Rp 0</h3>
                         </div>
-                        <div id="home-bill-status" class="bg-red-500/20 text-red-100 border border-red-400/30 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 backdrop-blur-sm">
+                        <div id="home-bill-status" class="bg-red-500/20 text-red-100 border border-red-400/30 text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 backdrop-blur-sm">
                             <i class="fas fa-exclamation-circle"></i> BELUM LUNAS
                         </div>
                     </div>
-                    
                     <div class="grid grid-cols-2 gap-4 relative z-10">
                         <div class="bg-white/10 rounded-xl p-3 backdrop-blur-sm">
-                            <p class="text-[10px] text-blue-100 mb-1" id="label-tunggakan">Tagihan Bulan</p>
-                            <p class="font-semibold text-sm" id="home-tunggakan">0 Tagihan</p>
+                            <p class="text-xs text-blue-100 mb-1" id="label-tunggakan">Tagihan Bulan</p>
+                            <p class="font-semibold" id="home-tunggakan">0 Tagihan</p>
                         </div>
                         <div class="bg-white/10 rounded-xl p-3 backdrop-blur-sm">
-                            <p class="text-[10px] text-blue-100 mb-1">Terakhir Bayar</p>
-                            <p class="font-semibold text-xs line-clamp-1 mt-0.5" id="home-last-paid">-</p>
+                            <p class="text-xs text-blue-100 mb-1">Terakhir Bayar</p>
+                            <p class="font-semibold text-sm line-clamp-1" id="home-last-paid">-</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Menu Grid -->
             <div class="px-6 mt-6 pb-4">
                 <h3 class="text-sm font-semibold text-gray-800 mb-4">Layanan Sekolah</h3>
-                <div id="home-menu-grid" class="grid grid-cols-4 gap-y-6 gap-x-2">
-                    <!-- Dinamis via JS -->
-                </div>
+                <div id="home-menu-grid" class="grid grid-cols-4 gap-y-6 gap-x-2"></div>
             </div>
         </div>
 
-        <!-- ==================== ADMIN: KELOLA MENU ==================== -->
-        <div id="screen-admin-menu" class="screen bg-gray-50">
-            <div class="bg-white px-6 py-5 shadow-sm sticky top-0 z-30 flex justify-between items-center">
-                <h2 class="text-lg font-bold text-primary">Kelola Fitur Menu</h2>
-                <button onclick="openMenuEditor('new')" class="bg-primary text-white text-xs font-semibold px-3 py-1.5 rounded-lg">
-                    + Tambah
-                </button>
-            </div>
-            <div class="p-6">
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden" id="admin-menu-list">
-                    <!-- Menus injected here -->
-                </div>
-            </div>
-        </div>
-
-        <!-- ADMIN MODAL: EDIT MENU -->
-        <div id="modal-edit-menu" class="fixed inset-0 bg-black/60 z-50 hidden flex flex-col justify-end transition-opacity duration-300 opacity-0">
-            <div class="bg-white rounded-t-3xl p-6 w-full max-w-[414px] mx-auto transform translate-y-full transition-transform duration-300 max-h-[85vh] overflow-y-auto" id="modal-edit-content">
+        <!-- ==================== ADMIN MENU EDITOR ==================== -->
+        <div id="screen-admin-dashboard" class="screen">
+            <div class="bg-gradient-primary pt-8 pb-10 px-6 text-white rounded-b-3xl relative mb-6">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-bold text-gray-800" id="modal-menu-title">Edit Menu</h3>
-                    <button onclick="closeMenuEditor()" class="w-8 h-8 bg-gray-100 rounded-full text-gray-500 flex items-center justify-center"><i class="fas fa-times"></i></button>
+                    <img src="https://iili.io/nHwYAuV.png" alt="Logo" class="h-8 w-auto">
+                    <span class="bg-red-500 text-white text-[10px] font-bold px-3 py-1 rounded-full border border-red-400">MODE ADMIN</span>
                 </div>
-                
+                <h2 class="text-xl font-bold mb-1">Kelola Fitur Menu</h2>
+                <p class="text-xs text-blue-200">Atur menu aplikasi untuk wali murid</p>
+            </div>
+            <div class="px-6">
+                <div class="flex justify-end mb-4">
+                    <button onclick="openMenuModal()" class="text-xs font-bold text-primary bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-xl border border-blue-100 transition shadow-sm flex items-center gap-2">
+                        <i class="fas fa-plus"></i> Tambah Menu
+                    </button>
+                </div>
+                <div class="space-y-3" id="admin-menu-list"></div>
+            </div>
+        </div>
+
+        <!-- Admin Modal Edit Menu -->
+        <div id="modal-edit-menu" class="fixed inset-0 bg-black/50 z-50 hidden opacity-0 transition-opacity duration-300 backdrop-blur-sm flex items-end sm:items-center justify-center">
+            <div class="bg-white w-full max-w-[414px] rounded-t-3xl sm:rounded-3xl p-6 transform translate-y-full sm:translate-y-0 transition-transform duration-300" id="modal-edit-menu-content">
+                <div class="flex justify-between items-center mb-5">
+                    <h3 class="text-lg font-bold text-gray-800" id="modal-menu-title">Tambah Fitur Baru</h3>
+                    <button onclick="closeMenuModal()" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times text-xl"></i></button>
+                </div>
                 <input type="hidden" id="edit-menu-id">
-                
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1.5">Nama Menu</label>
-                        <input type="text" id="edit-menu-name" class="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-1 focus:ring-primary focus:outline-none">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Nama Layanan</label>
+                        <input type="text" id="edit-menu-name" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary text-sm">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1.5">Target Halaman</label>
-                        <select id="edit-menu-target" class="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-1 focus:ring-primary focus:outline-none bg-white">
-                            <option value="screen-bills">Tagihan (screen-bills)</option>
-                            <option value="screen-history">Riwayat (screen-history)</option>
-                            <option value="screen-profile">Profil (screen-profile)</option>
-                            <option value="#">Tidak Aktif (#)</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1.5">Pengaturan Ikon</label>
-                        <div class="flex gap-2 mb-3">
-                            <input type="text" id="edit-menu-icon" class="flex-1 border border-gray-300 rounded-xl p-3 text-sm focus:ring-1 focus:ring-primary" placeholder="fa-bus atau URL/Link Foto">
-                            <label class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center cursor-pointer border border-blue-200 shrink-0">
-                                <i class="fas fa-upload"></i>
-                                <input type="file" accept="image/png, image/jpeg" class="hidden" onchange="handleAdminIconUpload(this)">
-                            </label>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Pilih Ikon Cepat</label>
+                        <div class="flex gap-2 overflow-x-auto py-2 no-scrollbar" id="admin-icon-presets">
+                            <!-- Injeksi JS -->
                         </div>
-                        
-                        <p class="text-[10px] text-gray-400 mb-2">Pilih Ikon Cepat (FontAwesome):</p>
-                        <div class="grid grid-cols-7 gap-2" id="icon-presets">
-                            <!-- Preset icons injected by JS -->
+                        <input type="hidden" id="edit-menu-icon" value="fa-circle">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Tampilan</label>
+                            <select id="edit-menu-color" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm">
+                                <option value="text-primary|bg-white">Biasa (Putih)</option>
+                                <option value="text-blue-600|bg-blue-50">Tersorot (Biru)</option>
+                                <option value="text-accent|bg-orange-50">Penting (Oranye)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Arahkan Ke</label>
+                            <select id="edit-menu-target" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm">
+                                <option value="">(Belum Ada)</option>
+                                <option value="screen-bills">Tagihan</option>
+                                <option value="screen-history">Riwayat</option>
+                            </select>
                         </div>
                     </div>
-                </div>
-
-                <div class="mt-8 flex gap-3">
-                    <button id="btn-delete-menu" class="w-1/3 bg-red-50 text-danger font-semibold py-3.5 rounded-xl border border-red-100 hidden" onclick="deleteMenu()">Hapus</button>
-                    <button class="flex-1 bg-primary text-white font-bold py-3.5 rounded-xl shadow-md" onclick="saveMenu()">Simpan Menu</button>
+                    <div class="pt-4 flex gap-3">
+                        <button id="btn-delete-menu" onclick="deleteMenu()" class="hidden flex-1 bg-red-50 text-danger font-bold py-3 rounded-xl border border-red-100">Hapus</button>
+                        <button onclick="saveMenu()" class="flex-1 bg-primary text-white font-bold py-3 rounded-xl shadow-md">Simpan</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -270,8 +202,29 @@
                 <button onclick="showScreen('screen-home')" class="text-gray-500 hover:text-primary"><i class="fas fa-arrow-left text-lg"></i></button>
                 <h2 class="text-lg font-bold text-primary">Tagihan Saya</h2>
             </div>
-            <div class="p-6" id="bills-container">
-                <!-- Injected via JS -->
+            
+            <div class="p-6">
+                <!-- Info Tunggakan -->
+                <div class="bg-orange-50 border border-orange-100 rounded-xl p-4 mb-6 flex gap-3 items-start" id="bill-warning-box">
+                    <i class="fas fa-info-circle text-accent mt-0.5"></i>
+                    <div>
+                        <h4 class="text-sm font-bold text-gray-800" id="bill-warning-title">Informasi Tagihan</h4>
+                        <p class="text-xs text-gray-600 mt-1" id="bill-warning-desc">Berikut adalah rincian tagihan Anda. Centang tagihan yang ingin dibayar.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-3 mb-24" id="bills-container"></div>
+            </div>
+
+            <!-- Floating Pay Button -->
+            <div class="fixed bottom-0 w-full max-w-[414px] bg-white border-t border-gray-200 p-4 pb-8 z-40 shadow-[0_-4px_15px_rgba(0,0,0,0.05)]">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-sm font-semibold text-gray-600">Total Dipilih:</span>
+                    <span class="text-lg font-bold text-primary" id="bills-selected-total">Rp 0</span>
+                </div>
+                <button onclick="processSelectedBills()" class="w-full bg-primary text-white font-bold py-3.5 rounded-xl shadow-md transition disabled:opacity-50" id="btn-pay-selected">
+                    Bayar
+                </button>
             </div>
         </div>
 
@@ -281,110 +234,78 @@
                 <button onclick="showScreen('screen-bills')" class="text-gray-500 hover:text-primary"><i class="fas fa-arrow-left text-lg"></i></button>
                 <h2 class="text-lg font-bold text-primary">Pembayaran</h2>
             </div>
-
             <div class="p-6">
-                <!-- Bill Summary -->
                 <div class="bg-white rounded-2xl shadow-soft p-5 border border-gray-100 mb-6">
-                    <h3 class="text-sm font-semibold text-gray-500 mb-4 border-b pb-2">Rincian Tagihan</h3>
+                    <h3 class="text-sm font-semibold text-gray-500 mb-4 border-b pb-2">Rincian Pembayaran</h3>
                     <div class="flex justify-between items-center mb-3">
                         <span class="text-sm text-gray-600">Siswa</span>
-                        <span class="text-sm font-semibold text-right" id="checkout-student-info"></span>
+                        <span class="text-sm font-semibold text-right wrap-text" id="checkout-student-info">Nama<br><span class="text-xs text-gray-400 font-normal">Kelas</span></span>
                     </div>
                     <div class="flex justify-between items-start mb-3">
-                        <span class="text-sm text-gray-600">Pembayaran</span>
-                        <span class="text-sm font-semibold text-right max-w-[60%]" id="checkout-title"></span>
-                    </div>
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-sm text-gray-600">Nominal</span>
-                        <span class="text-sm font-semibold" id="checkout-amount"></span>
+                        <span class="text-sm text-gray-600">Keterangan</span>
+                        <span class="text-sm font-semibold text-right wrap-text max-w-[60%]" id="checkout-title">Tagihan</span>
                     </div>
                     <div class="border-t border-dashed border-gray-300 pt-4 flex justify-between items-center">
                         <span class="font-bold text-gray-800">Total Bayar</span>
-                        <span class="text-lg font-bold text-primary" id="checkout-total"></span>
+                        <span class="text-lg font-bold text-primary" id="checkout-total">Rp 0</span>
                     </div>
                 </div>
 
-                <!-- Payment Methods -->
                 <h3 class="text-sm font-semibold text-gray-800 mb-3 px-1">Pilih Metode Pembayaran</h3>
                 <div class="space-y-3 mb-8">
                     <label class="flex items-center justify-between bg-white rounded-xl p-4 border border-gray-200 cursor-pointer hover:border-primary transition group">
                         <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center text-accent">
-                                <i class="fas fa-university text-xl"></i>
-                            </div>
+                            <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600"><i class="fas fa-university text-xl"></i></div>
                             <div>
-                                <h4 class="font-semibold text-sm group-hover:text-primary transition">Transfer Bank</h4>
-                                <p class="text-xs text-gray-400">Bank BRI</p>
+                                <h4 class="font-semibold text-sm group-hover:text-primary transition">Transfer Bank BRI</h4>
+                                <p class="text-[10px] text-gray-400">Verifikasi manual oleh Admin</p>
                             </div>
                         </div>
-                        <input type="radio" name="payment_method" value="Transfer" class="w-5 h-5 text-primary focus:ring-primary border-gray-300" checked>
-                    </label>
-
-                    <label class="flex items-center justify-between bg-white rounded-xl p-4 border border-gray-200 cursor-pointer hover:border-primary transition group">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600">
-                                <i class="fas fa-qrcode text-xl"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-sm group-hover:text-primary transition">QRIS</h4>
-                                <p class="text-xs text-gray-400">Gopay, OVO, Dana, Shopee</p>
-                            </div>
-                        </div>
-                        <input type="radio" name="payment_method" value="QRIS" class="w-5 h-5 text-primary focus:ring-primary border-gray-300">
-                    </label>
-
-                    <label class="flex items-center justify-between bg-white rounded-xl p-4 border border-gray-200 cursor-pointer hover:border-primary transition group">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center text-success">
-                                <i class="fas fa-money-bill-wave text-xl"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-sm group-hover:text-primary transition">Tunai (Cash)</h4>
-                                <p class="text-xs text-gray-400">Bayar langsung ke TU Sekolah</p>
-                            </div>
-                        </div>
-                        <input type="radio" name="payment_method" value="Tunai" class="w-5 h-5 text-primary focus:ring-primary border-gray-300">
+                        <input type="radio" name="payment_method" value="va" class="w-5 h-5 text-primary border-gray-300" checked>
                     </label>
                 </div>
-
-                <button onclick="processPayment()" class="w-full bg-primary hover:bg-opacity-90 text-white font-bold py-4 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                <button onclick="processPayment()" class="w-full bg-primary text-white font-bold py-4 rounded-xl shadow-lg flex items-center justify-center gap-2">
                     Lanjutkan <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
         </div>
 
-        <!-- ==================== INSTRUCTION & UPLOAD SCREEN ==================== -->
+        <!-- ==================== INSTRUCTION SCREEN ==================== -->
         <div id="screen-instruction" class="screen">
             <div class="bg-white px-6 py-5 shadow-sm sticky top-0 z-30 flex items-center gap-4">
                 <button onclick="showScreen('screen-checkout')" class="text-gray-500 hover:text-primary"><i class="fas fa-arrow-left text-lg"></i></button>
-                <h2 class="text-lg font-bold text-primary">Instruksi Pembayaran</h2>
+                <h2 class="text-lg font-bold text-primary">Transfer Bank</h2>
             </div>
             
             <div class="p-6">
                 <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 text-center mb-6">
-                    <p class="text-sm text-gray-500 mb-2">Total yang harus dibayar:</p>
+                    <p class="text-sm text-gray-500 mb-2">Total yang harus ditransfer:</p>
                     <h2 class="text-2xl font-bold text-primary mb-6" id="instruction-amount">Rp 0</h2>
                     
-                    <!-- Dynamic area: QRIS or VA -->
-                    <div id="instruction-qris-area" class="hidden">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=SUDAGARAN_PAY" alt="QRIS" class="w-48 h-48 mx-auto border-4 border-gray-100 rounded-xl p-2 mb-4">
-                        <p class="text-xs text-gray-500">Scan QRIS di atas menggunakan aplikasi e-Wallet atau M-Banking Anda.</p>
-                    </div>
-
-                    <div id="instruction-va-area" class="hidden">
-                        <div class="bg-gray-50 rounded-xl p-4 border border-gray-200 mb-4 text-left">
-                            <p class="text-xs text-gray-500 mb-1">Bank BRI</p>
-                            <div class="flex justify-between items-center">
-                                <p class="text-lg font-bold font-mono text-gray-800 tracking-wider">0112 01 001620 30 3</p>
-                                <button onclick="navigator.clipboard.writeText('011201001620303'); alert('Berhasil disalin');" class="text-primary text-xs font-bold bg-blue-50 px-3 py-1.5 rounded-md hover:bg-blue-100">SALIN</button>
-                            </div>
-                            <p class="text-[10px] text-gray-400 mt-2">a.n. SD Muhammadiyah Sudagaran Wonosobo</p>
+                    <div class="bg-blue-50 rounded-xl p-5 border border-blue-100 text-left relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-blue-100 rounded-bl-full opacity-50"></div>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/BRI_2020.svg/1200px-BRI_2020.svg.png" alt="BRI" class="h-6 mb-3 object-contain">
+                        <div class="flex justify-between items-center mb-1">
+                            <p class="text-xl font-bold font-mono text-gray-800 tracking-wider">0112 01 001620 30 3</p>
                         </div>
+                        <p class="text-xs font-semibold text-gray-700">a.n. SD Muhammadiyah Sudagaran Wonosobo</p>
                     </div>
                 </div>
 
-                <button onclick="finalizePayment('pending')" class="w-full bg-primary hover:bg-opacity-90 text-white font-bold py-4 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
-                    <i class="fas fa-check-circle"></i> Selesai Membayar
+                <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-5 mb-8">
+                    <h3 class="text-sm font-bold text-gray-800 mb-2">Upload Bukti Transfer</h3>
+                    <p class="text-xs text-gray-500 mb-4">Wajib unggah struk agar pembayaran terverifikasi.</p>
+                    <label class="block w-full border-2 border-dashed border-gray-300 rounded-xl p-6 text-center cursor-pointer hover:border-primary hover:bg-blue-50 transition" id="upload-label">
+                        <div id="upload-placeholder">
+                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                            <p class="text-sm text-gray-600 font-medium">Pilih Foto</p>
+                        </div>
+                        <img id="upload-preview" class="hidden w-full h-32 object-contain mx-auto rounded">
+                        <input type="file" id="receipt-upload" accept="image/*" class="hidden" onchange="handleFileUpload(event)">
+                    </label>
+                </div>
+                <button onclick="confirmInstruction()" class="w-full bg-primary text-white font-bold py-4 rounded-xl shadow-lg flex items-center justify-center gap-2">
+                    <i class="fas fa-check-circle"></i> Saya Sudah Transfer
                 </button>
             </div>
         </div>
@@ -392,48 +313,28 @@
         <!-- ==================== RECEIPT SCREEN ==================== -->
         <div id="screen-receipt" class="screen bg-primary min-h-screen pb-0">
             <div class="px-6 py-8 flex flex-col items-center justify-center min-h-[90vh]">
-                
-                <div class="w-full bg-white rounded-3xl shadow-2xl overflow-hidden relative" id="print-area">
-                    <div class="h-4 bg-accent w-full"></div>
+                <div class="w-full bg-white rounded-3xl shadow-2xl overflow-hidden relative">
+                    <div class="h-4 bg-accent w-full" id="receipt-top-bar"></div>
                     <div class="p-8 text-center border-b border-dashed border-gray-300 relative">
-                        <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center text-accent mx-auto mb-4" id="receipt-icon-bg">
-                            <i class="fas fa-clock text-3xl" id="receipt-icon"></i>
+                        <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center text-accent mx-auto mb-4" id="receipt-icon">
+                            <i class="fas fa-clock text-3xl"></i>
                         </div>
-                        <h2 class="text-xl font-bold text-gray-800" id="receipt-status-title">Menunggu Konfirmasi</h2>
-                        <p class="text-sm text-gray-500 mt-1" id="receipt-date"></p>
-                        
-                        <div class="absolute -bottom-4 -left-4 w-8 h-8 bg-primary rounded-full print-hide-circle"></div>
-                        <div class="absolute -bottom-4 -right-4 w-8 h-8 bg-primary rounded-full print-hide-circle"></div>
+                        <h2 class="text-xl font-bold text-gray-800" id="receipt-status-title">Menunggu Verifikasi</h2>
+                        <p class="text-sm text-gray-500 mt-1" id="receipt-date">-</p>
                     </div>
-                    
-                    <div class="p-8">
-                        <div class="space-y-4">
-                            <div>
-                                <p class="text-xs text-gray-500">Nomor Transaksi</p>
-                                <p class="text-sm font-semibold font-mono" id="receipt-tx"></p>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-500">Siswa</p>
-                                <p class="text-sm font-semibold" id="receipt-student"></p>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-500">Rincian Pembayaran</p>
-                                <p class="text-sm font-semibold" id="receipt-title"></p>
-                            </div>
+                    <div class="p-6">
+                        <div class="space-y-3">
+                            <div><p class="text-[10px] text-gray-500">Nomor Transaksi</p><p class="text-sm font-semibold font-mono" id="receipt-tx">-</p></div>
+                            <div><p class="text-[10px] text-gray-500">Siswa</p><p class="text-sm font-semibold wrap-text" id="receipt-student">-</p></div>
+                            <div><p class="text-[10px] text-gray-500">Rincian</p><p class="text-xs font-semibold wrap-text leading-relaxed" id="receipt-title">-</p></div>
                         </div>
-                        
                         <div class="mt-6 bg-gray-50 rounded-xl p-4 flex justify-between items-center border border-gray-100">
-                            <span class="text-sm text-gray-600">Total Dibayar</span>
-                            <span class="text-xl font-bold text-primary" id="receipt-total"></span>
+                            <span class="text-sm text-gray-600">Total</span>
+                            <span class="text-xl font-bold text-primary" id="receipt-total">Rp 0</span>
                         </div>
                     </div>
                 </div>
-
-                <div class="w-full mt-8 flex flex-col gap-3">
-                    <button class="w-full bg-white text-primary py-4 rounded-xl font-bold shadow-lg transition" onclick="showScreen('screen-home')">
-                        Kembali ke Beranda
-                    </button>
-                </div>
+                <button class="w-full mt-6 bg-white text-primary py-4 rounded-xl font-bold shadow-lg" onclick="showScreen('screen-home')">Tutup</button>
             </div>
         </div>
 
@@ -443,950 +344,399 @@
                 <h2 class="text-lg font-bold text-primary">Riwayat Transaksi</h2>
             </div>
             <div class="p-6">
-                <div class="space-y-4" id="history-container">
-                    <!-- Dinamis via JS -->
-                </div>
+                <div class="space-y-4" id="history-container"></div>
             </div>
         </div>
         
         <div id="screen-profile" class="screen">
-            <div class="bg-primary pt-12 pb-6 px-6 text-center text-white relative rounded-b-3xl">
+            <div class="bg-primary pt-12 pb-6 px-6 text-center text-white relative rounded-b-3xl mb-6">
                  <div class="islamic-pattern opacity-10"></div>
                  <div class="relative z-10">
-                    <div class="w-20 h-20 bg-white rounded-full border-4 border-white shadow-md mx-auto mb-3 flex items-center justify-center p-2">
-                        <img src="https://iili.io/nHwYAuV.png" alt="Profile" class="w-full h-full object-contain">
+                    <div class="w-20 h-20 bg-white rounded-full border-4 border-white shadow-md mx-auto mb-3 flex items-center justify-center overflow-hidden">
+                        <img src="https://iili.io/nHwYAuV.png" alt="Logo" class="w-14 h-14 object-contain">
                     </div>
-                    <h2 class="text-xl font-bold break-words" id="profile-name">Ayah/Bunda</h2>
-                    <p class="text-sm text-blue-200" id="profile-student">Wali dari -</p>
+                    <h2 class="text-xl font-bold wrap-text px-4" id="profile-name">Ayah/Bunda</h2>
+                    <p class="text-sm text-blue-200 mt-1 wrap-text" id="profile-student">Siswa</p>
                  </div>
             </div>
-            <div class="p-6 space-y-3">
-                <button onclick="openPasswordModal()" class="w-full bg-white text-primary font-bold py-4 rounded-xl transition border border-gray-200 shadow-sm flex items-center justify-center gap-2">
+            <div class="p-6 space-y-4">
+                <button onclick="changePassword()" class="w-full bg-white text-primary hover:bg-gray-50 font-bold py-4 rounded-xl border border-gray-200 transition shadow-sm flex items-center justify-center gap-2">
                     <i class="fas fa-key"></i> Ubah Password
                 </button>
-                <button onclick="logout()" class="w-full bg-red-50 text-danger hover:bg-red-100 font-bold py-4 rounded-xl transition border border-red-100 flex items-center justify-center gap-2">
+                <button onclick="logout()" class="w-full bg-red-50 text-danger hover:bg-red-100 font-bold py-4 rounded-xl border border-red-100 transition shadow-sm flex items-center justify-center gap-2">
                     <i class="fas fa-sign-out-alt"></i> Keluar Aplikasi
                 </button>
             </div>
         </div>
 
-        <!-- ==================== PASSWORD MODAL ==================== -->
-        <div id="modal-password" class="fixed inset-0 bg-black/50 z-50 hidden flex flex-col justify-end transition-opacity duration-300 opacity-0">
-            <div class="bg-white rounded-t-3xl p-6 w-full max-w-[414px] mx-auto transform translate-y-full transition-transform duration-300" id="modal-password-content">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-bold text-gray-800">Ubah Password</h3>
-                    <button onclick="closePasswordModal()" class="w-8 h-8 bg-gray-100 rounded-full text-gray-500 flex items-center justify-center"><i class="fas fa-times"></i></button>
-                </div>
-                
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1.5">Password Lama</label>
-                        <input type="password" id="old-pass" class="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-1 focus:ring-primary focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1.5">Password Baru</label>
-                        <input type="password" id="new-pass" class="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-1 focus:ring-primary focus:outline-none">
-                    </div>
-                    <button onclick="savePassword()" class="w-full bg-primary text-white font-bold py-3.5 rounded-xl shadow-md mt-4">Simpan Password</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ==================== BOTTOM NAV (USER & ADMIN) ==================== -->
-        <nav id="bottom-nav" class="fixed bottom-0 w-full max-w-[414px] bg-white/90 backdrop-blur-md border-t border-gray-200 z-40 pb-safe hidden">
+        <!-- ==================== BOTTOM NAV ==================== -->
+        <nav id="bottom-nav" class="fixed bottom-0 w-full max-w-[414px] bg-white/90 backdrop-blur-md border-t border-gray-200 z-40 hidden pb-2">
             <div class="flex justify-around items-center py-2 px-2">
                 <button onclick="showScreen('screen-home')" class="nav-btn flex flex-col items-center p-2 w-16 text-primary" data-target="screen-home">
-                    <i class="fas fa-home text-xl mb-1 transition-transform"></i>
-                    <span class="text-[10px] font-semibold">Beranda</span>
+                    <i class="fas fa-home text-xl mb-1"></i><span class="text-[10px] font-semibold">Beranda</span>
                 </button>
                 <button onclick="showScreen('screen-bills')" class="nav-btn flex flex-col items-center p-2 w-16 text-gray-400" data-target="screen-bills">
-                    <i class="fas fa-file-invoice text-xl mb-1 transition-transform"></i>
-                    <span class="text-[10px] font-semibold">Tagihan</span>
+                    <i class="fas fa-file-invoice text-xl mb-1"></i><span class="text-[10px] font-semibold">Tagihan</span>
                 </button>
                 <div class="relative -top-5">
-                    <button onclick="showScreen('screen-bills')" class="w-14 h-14 bg-accent rounded-full flex items-center justify-center text-white shadow-lg border-4 border-white cursor-pointer">
+                    <button class="w-14 h-14 bg-accent rounded-full flex items-center justify-center text-white shadow-lg border-4 border-white">
                         <i class="fas fa-qrcode text-2xl"></i>
                     </button>
                 </div>
                 <button onclick="showScreen('screen-history')" class="nav-btn flex flex-col items-center p-2 w-16 text-gray-400" data-target="screen-history">
-                    <i class="fas fa-history text-xl mb-1 transition-transform"></i>
-                    <span class="text-[10px] font-semibold">Riwayat</span>
+                    <i class="fas fa-history text-xl mb-1"></i><span class="text-[10px] font-semibold">Riwayat</span>
                 </button>
                 <button onclick="showScreen('screen-profile')" class="nav-btn flex flex-col items-center p-2 w-16 text-gray-400" data-target="screen-profile">
-                    <i class="fas fa-user text-xl mb-1 transition-transform"></i>
-                    <span class="text-[10px] font-semibold">Akun</span>
+                    <i class="fas fa-user text-xl mb-1"></i><span class="text-[10px] font-semibold">Akun</span>
                 </button>
             </div>
         </nav>
 
-        <nav id="bottom-nav-admin" class="fixed bottom-0 w-full max-w-[414px] bg-gray-900 border-t border-gray-800 z-40 pb-safe hidden">
+        <nav id="bottom-nav-admin" class="fixed bottom-0 w-full max-w-[414px] bg-white/90 backdrop-blur-md border-t border-gray-200 z-40 hidden pb-2">
             <div class="flex justify-around items-center py-2 px-2">
-                <button onclick="showScreen('screen-admin-menu')" class="nav-btn-admin flex flex-col items-center p-2 w-20 text-white" data-target="screen-admin-menu">
-                    <i class="fas fa-th-large text-lg mb-1"></i><span class="text-[10px] font-semibold">Kelola Menu</span>
-                </button>
-                <button onclick="logout()" class="flex flex-col items-center p-2 w-20 text-gray-500 hover:text-red-400">
-                    <i class="fas fa-power-off text-lg mb-1"></i><span class="text-[10px] font-semibold">Keluar</span>
-                </button>
+                <button class="nav-btn flex flex-col items-center p-2 w-20 text-primary"><i class="fas fa-bars text-xl mb-1"></i><span class="text-[10px] font-semibold">Menu</span></button>
+                <button onclick="logout()" class="nav-btn flex flex-col items-center p-2 w-20 text-gray-400 hover:text-danger"><i class="fas fa-sign-out-alt text-xl mb-1"></i><span class="text-[10px] font-semibold">Keluar</span></button>
             </div>
         </nav>
 
         <!-- Message Box -->
         <div id="messageBox" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300 backdrop-blur-sm">
-            <div class="bg-white rounded-2xl p-6 max-w-sm w-11/12 shadow-2xl transform scale-95 transition-transform duration-300" id="messageBoxContent">
-                <div class="text-center mb-4">
-                    <div id="messageIcon" class="w-12 h-12 rounded-full mx-auto flex items-center justify-center mb-3"></div>
-                    <h3 id="messageTitle" class="text-lg font-bold text-gray-800"></h3>
-                    <p id="messageText" class="text-sm text-gray-500 mt-2"></p>
-                </div>
-                <button onclick="closeMessageBox()" class="w-full py-3 rounded-xl font-semibold transition" id="messageBtn"></button>
+            <div class="bg-white rounded-2xl p-6 max-w-sm w-11/12 shadow-2xl transform scale-95 transition-transform duration-300 text-center" id="messageBoxContent">
+                <div id="messageIcon" class="w-12 h-12 rounded-full mx-auto flex items-center justify-center mb-3"></div>
+                <h3 id="messageTitle" class="text-lg font-bold text-gray-800"></h3>
+                <p id="messageText" class="text-sm text-gray-500 mt-2"></p>
+                <button onclick="closeMessageBox()" class="w-full py-3 rounded-xl font-semibold transition mt-4" id="messageBtn">OK</button>
             </div>
         </div>
 
     </div>
 
-    <!-- SEMUA JAVASCRIPT RAPI DAN AMAN DARI BOCOR -->
+    <!-- SCRIPT UTAMA -->
     <script>
+        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRTbkov_lwEit8zx4ZDnejhi5FvGXTFAp4xxDM-NinByMm9QVQuRK2ssk9GCtKaaItXwBKo1nqU0c9q/pub?gid=0&single=true&output=csv';
         const GAS_URL = 'https://script.google.com/macros/s/AKfycbwt7ctBKsBS63kSgJ5fUzIae3cd3ZPG16chkhxcdDt65iDLB0DD36ESSQn95RHnjPeK/exec';
-        const PRESET_ICONS = ['fa-wallet','fa-money-bill-wave','fa-coins','fa-file-invoice-dollar','fa-receipt','fa-chart-line','fa-piggy-bank','fa-graduation-cap','fa-school','fa-book','fa-book-open','fa-chalkboard-user','fa-user-graduate','fa-bus','fa-shirt','fa-medal','fa-basketball','fa-mosque','fa-quran','fa-users','fa-calendar-alt','fa-store'];
-
-        let currentUserRole = 'guest';
-        let currentStudentToken = '';
-        let currentStudentNIS = '';
-        let currentStudentName = '';
-        let currentStudentClass = '';
-        let selectedBillIds = [];
-        let currentBillToPay = null;
         
-        const appDB = {
-            menus: [
-                { id: 'm1', name: 'SPP', icon: 'fa-graduation-cap', target: 'screen-bills' },
-                { id: 'm2', name: 'Tahfidz', icon: 'fa-book-open-reader', target: 'screen-bills' },
-                { id: 'm3', name: 'Kegiatan', icon: 'fa-users', target: '#' },
-                { id: 'm4', name: 'Seragam', icon: 'fa-shirt', target: '#' },
-                { id: 'm5', name: 'Buku', icon: 'fa-book', target: '#' },
-                { id: 'm6', name: 'Field Trip', icon: 'fa-bus', target: '#' },
-                { id: 'm7', name: 'Donasi', icon: 'fa-hand-holding-heart', target: '#' },
-                { id: 'm8', name: 'Kantin', icon: 'fa-store', target: '#' }
+        const PRESET_ICONS = ['fa-graduation-cap', 'fa-book', 'fa-shirt', 'fa-store', 'fa-bus', 'fa-utensils', 'fa-mosque', 'fa-laptop', 'fa-futbol', 'fa-medal', 'fa-file-invoice-dollar', 'fa-wallet', 'fa-money-bill', 'fa-history', 'fa-users', 'fa-calendar-alt', 'fa-chart-bar', 'fa-bullhorn', 'fa-star', 'fa-heart'];
+
+        let appDB = {
+            userRole: 'guest',
+            menuItems: JSON.parse(localStorage.getItem('adminMenu')) || [
+                { id: 1, title: 'SPP', icon: 'fa-graduation-cap', color: 'text-primary|bg-white', target: 'screen-bills' },
+                { id: 2, title: 'Tahfidz', icon: 'fa-book', color: 'text-primary|bg-white', target: '' },
+                { id: 3, title: 'Kegiatan', icon: 'fa-users', color: 'text-primary|bg-white', target: '' },
+                { id: 7, title: 'Tagihan', icon: 'fa-file-invoice-dollar', color: 'text-blue-600|bg-blue-50', target: 'screen-bills' },
+                { id: 8, title: 'Riwayat', icon: 'fa-history', color: 'text-blue-600|bg-blue-50', target: 'screen-history' }
             ],
-            bills: [],
-            history: []
+            bills: [], history: []
         };
 
-        function formatCurrency(num) {
-            return 'Rp ' + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
+        let currentStudentToken = "", currentStudentNIS = "", currentStudentName = "", currentStudentClass = "";
+        let selectedBillIds = [], isFileUploaded = false, paymentDataPayload = {};
 
-        // CSV Parser Handal (Menghindari koma di dalam teks/kutip)
+        function formatCurrency(num) { return 'Rp ' + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
         function parseCSVRow(str) {
-            const result = [];
-            let inQuotes = false;
-            let current = '';
-            for (let i = 0; i < str.length; i++) {
-                if (str[i] === '"') {
-                    inQuotes = !inQuotes;
-                } else if (str[i] === ',' && !inQuotes) {
-                    result.push(current);
-                    current = '';
-                } else {
-                    current += str[i];
-                }
+            let row = [], inQuotes = false, curr = '';
+            for (let i=0; i<str.length; i++) {
+                let c = str[i];
+                if (c === '"') { inQuotes = !inQuotes; }
+                else if (c === ',' && !inQuotes) { row.push(curr); curr = ''; }
+                else { curr += c; }
             }
-            result.push(current);
-            return result.map(s => s.replace(/^"|"$/g, '').trim());
+            row.push(curr); return row;
         }
-
         function togglePassword() {
-            const passInput = document.getElementById('loginPass');
-            const toggleIcon = document.getElementById('toggleIcon');
-            if (passInput.type === "password") {
-                passInput.type = "text";
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                passInput.type = "password";
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            }
-        }
-
-        function openPasswordModal() {
-            const modal = document.getElementById('modal-password');
-            const content = document.getElementById('modal-password-content');
-            document.getElementById('old-pass').value = '';
-            document.getElementById('new-pass').value = '';
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                content.classList.remove('translate-y-full');
-            }, 10);
-        }
-
-        function closePasswordModal() {
-            const modal = document.getElementById('modal-password');
-            const content = document.getElementById('modal-password-content');
-            modal.classList.add('opacity-0');
-            content.classList.add('translate-y-full');
-            setTimeout(() => { modal.classList.add('hidden'); }, 300);
-        }
-
-        function savePassword() {
-            const oldP = document.getElementById('old-pass').value;
-            const newP = document.getElementById('new-pass').value;
-            if(!oldP || !newP) return alert('Lengkapi isian.');
-            alert('Fitur ubah password berhasil diproses (Mode Demo).');
-            closePasswordModal();
+            let p = document.getElementById('loginPass'); let i = document.getElementById('eyeIcon');
+            if(p.type === 'password'){ p.type='text'; i.className='fas fa-eye-slash'; } else { p.type='password'; i.className='fas fa-eye'; }
         }
 
         async function handleLogin() {
             const idInput = document.getElementById('loginId').value.trim();
             const passInput = document.getElementById('loginPass').value.trim();
             
-            showMessageBox('Mohon Tunggu', 'Mengecek data & sinkronisasi server...', 'fa-spinner fa-spin', 'text-primary bg-blue-50', '', 'hidden');
-
-            if (idInput === 'admin' && passInput === 'bismillah') {
-                setTimeout(() => {
-                    closeMessageBox();
-                    currentUserRole = 'admin';
-                    showScreen('screen-admin-menu');
-                }, 800);
-                return;
+            if(idInput==='admin' && passInput==='bismillah'){
+                appDB.userRole = 'admin'; showScreen('screen-admin-dashboard'); return;
             }
 
+            showMessageBox('Mohon Tunggu', 'Mencari data siswa...', 'fa-spinner fa-spin', 'text-primary bg-blue-50', '', 'hidden');
             try {
-                // 1. Fetch Master Data Siswa
-                const res = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vRTbkov_lwEit8zx4ZDnejhi5FvGXTFAp4xxDM-NinByMm9QVQuRK2ssk9GCtKaaItXwBKo1nqU0c9q/pub?gid=0&single=true&output=csv');
-                const text = await res.text();
-                const lines = text.split('\n');
-                let foundUser = null;
-                
-                for (let i = 1; i < lines.length; i++) {
+                const res = await fetch(CSV_URL); const text = await res.text();
+                const lines = text.split('\n'); let foundUser = null;
+                for(let i=1; i<lines.length; i++){
                     if(!lines[i].trim()) continue;
-                    const row = parseCSVRow(lines[i]);
-                    // Kolom B (Index 1) = Token, Kolom C (Index 2) = NIS
-                    if (row.length > 2 && row[2].trim() === idInput && row[1].trim() === passInput) {
-                        foundUser = row;
-                        break;
-                    }
+                    let row = parseCSVRow(lines[i]);
+                    if(row.length >= 6 && row[2].trim() === idInput && row[1].trim() === passInput){ foundUser = row; break; }
                 }
 
-                if (!foundUser) {
-                    showMessageBox('Gagal', 'NIS atau Password salah.', 'fa-times-circle', 'bg-red-50 text-danger', 'Coba Lagi');
-                    return;
+                if(!foundUser) {
+                    showMessageBox('Gagal', 'NIS atau Password salah.', 'fa-times', 'bg-red-50 text-danger'); return;
                 }
 
-                currentStudentToken = foundUser[1].trim();
-                currentStudentNIS = foundUser[2].trim();
-                currentStudentName = foundUser[3].trim();
-                currentStudentClass = foundUser[5].trim();
-                
-                appDB.bills = [];
-                appDB.history = [];
+                currentStudentToken = foundUser[1].trim(); currentStudentNIS = foundUser[2].trim();
+                currentStudentName = foundUser[3].trim(); currentStudentClass = foundUser[5].trim();
+                appDB.bills = []; appDB.history = [];
 
-                // Peta Kolom Tagihan Excel
+                // Peta Kolom (Kolom C = 2, dll. A = 0)
                 const mapCols = [
                     {idx: 6, code: 'bps', title: 'BPS'},
                     {idx: 7, code: 'sppJuli', title: 'SPP Juli'},
-                    {idx: 8, code: 'spp', title: 'SPP', ketIdx: 9},
-                    {idx: 10, code: 'daftarUlang1', title: 'Daftar Ulang I'},
-                    {idx: 11, code: 'daftarUlang2', title: 'Daftar Ulang II'},
-                    {idx: 12, code: 'daftarUlang3', title: 'Daftar Ulang III'},
-                    {idx: 13, code: 'tahfidzPlus', title: 'Kelas Tahfidz Plus', ketIdx: 14},
-                    {idx: 15, code: 'tahfidz', title: 'Kelas Tahfidz'},
-                    {idx: 16, code: 'icp', title: 'Kelas ICP'},
-                    {idx: 17, code: 'icpSore', title: 'ICP Sore'},
-                    {idx: 18, code: 'tanggungan', title: 'Tanggungan Tahun Lalu'}
+                    {idx: 8, code: 'spp', title: 'SPP'},
+                    {idx: 9, code: 'daftarUlang1', title: 'Daftar Ulang I'},
+                    {idx: 10, code: 'daftarUlang2', title: 'Daftar Ulang II'},
+                    {idx: 11, code: 'daftarUlang3', title: 'Daftar Ulang III'},
+                    {idx: 12, code: 'tahfidzPlus', title: 'Kelas Tahfidz Plus'},
+                    {idx: 13, code: 'tahfidz', title: 'Kelas Tahfidz'},
+                    {idx: 14, code: 'icp', title: 'Kelas ICP'},
+                    {idx: 15, code: 'icpSore', title: 'ICP Sore'},
+                    {idx: 16, code: 'tanggungan', title: 'Tanggungan Tahun Lalu'}
                 ];
 
-                // Memasukkan tagihan mentah
                 mapCols.forEach(c => {
                     if(foundUser[c.idx]) {
-                        let amt = parseInt(foundUser[c.idx].replace(/[^0-9]/g, ''));
-                        if(!isNaN(amt) && amt > 0) {
-                            let fTitle = c.title;
-                            let ket = '';
-                            if(c.ketIdx && foundUser[c.ketIdx] && foundUser[c.ketIdx].trim() !== '') {
-                                ket = foundUser[c.ketIdx].trim();
-                                fTitle += ` (${ket})`;
-                            }
-                            appDB.bills.push({
-                                id: 'B-' + c.code,
-                                code: c.code,
-                                title: fTitle,
-                                baseTitle: c.title,
-                                amount: amt,
-                                status: 'unpaid',
-                                ket: ket
-                            });
-                        }
+                        let amt = parseInt(foundUser[c.idx].replace(/[^0-9]/g, ""));
+                        if(!isNaN(amt) && amt > 0) appDB.bills.push({ id: 'B-'+c.code, code: c.code, title: c.title, amount: amt, status: 'unpaid' });
                     }
                 });
 
-                // 2. Fetch History dari Sheet Konfirmasi (LUNAS/BERHASIL)
+                // Fetch Sheet Konfirmasi (Gid 1959834473) -> Cek Lunas
                 try {
-                    const konfirmasiRes = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vRTbkov_lwEit8zx4ZDnejhi5FvGXTFAp4xxDM-NinByMm9QVQuRK2ssk9GCtKaaItXwBKo1nqU0c9q/pub?gid=1959834473&single=true&output=csv');
-                    const konfirmasiText = await konfirmasiRes.text();
-                    const konfirmasiLines = konfirmasiText.split('\n');
-                    
-                    for(let p = 1; p < konfirmasiLines.length; p++) {
-                        if(!konfirmasiLines[p].trim()) continue;
-                        const row = parseCSVRow(konfirmasiLines[p]);
-                        
-                        if(row.length >= 4 && row[3].trim() === currentStudentNIS) {
-                            let details = [];
-                            let totalAmt = 0;
-                            let statusCell = (row[19] || '').trim().toLowerCase();
-                            let isConfirmed = (statusCell === 'true' || statusCell === 'lunas' || statusCell === 'berhasil');
-                            
-                            if(isConfirmed) {
+                    let kRes = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vRTbkov_lwEit8zx4ZDnejhi5FvGXTFAp4xxDM-NinByMm9QVQuRK2ssk9GCtKaaItXwBKo1nqU0c9q/pub?gid=1959834473&single=true&output=csv');
+                    let kText = await kRes.text(); let kLines = kText.split('\n');
+                    for(let p=1; p<kLines.length; p++){
+                        let row = parseCSVRow(kLines[p]);
+                        if(row.length >= 4 && row[3].trim() === currentStudentNIS){
+                            let stat = (row[19]||"").trim().toLowerCase();
+                            if(stat === 'true' || stat === 'lunas' || stat === 'berhasil'){
+                                let tot = 0; let det = [];
                                 mapCols.forEach(c => {
-                                    if(row[c.idx]) {
-                                        let amt = parseInt(row[c.idx].replace(/[^0-9]/g, ''));
-                                        if(!isNaN(amt) && amt > 0) {
-                                            totalAmt += amt;
-                                            let title = c.title;
-                                            if(c.ketIdx && row[c.ketIdx] && row[c.ketIdx].trim() !== '') {
-                                                title += ` (${row[c.ketIdx].trim()})`;
-                                            }
-                                            details.push({title: title, amount: amt});
-                                            
-                                            // Tagihan jadi PAID
-                                            let actBill = appDB.bills.find(b => b.code === c.code);
-                                            if(actBill) actBill.status = 'paid';
-                                        }
-                                    }
+                                    if(row[c.idx]){ let amt = parseInt(row[c.idx].replace(/[^0-9]/g,"")); if(amt>0){ tot+=amt; det.push({title:c.title, amount:amt}); let b=appDB.bills.find(x=>x.code===c.code); if(b) b.status='paid'; } }
                                 });
-
-                                if(totalAmt > 0) {
-                                    appDB.history.unshift({
-                                        id: 'TX-' + (Math.floor(Math.random()*90000) + 10000),
-                                        date: row[2] || '-',
-                                        title: details.length > 1 ? 'Multi Tagihan' : (details[0] ? details[0].title : 'Pembayaran'),
-                                        amount: totalAmt,
-                                        method: 'Pembayaran App',
-                                        status: 'success',
-                                        details: details
-                                    });
-                                }
+                                if(tot>0) appDB.history.unshift({ id: 'TX-'+Math.floor(Math.random()*90000), date: row[2], title: det.length>1?'Multi Tagihan':det[0].title, amount: tot, status: 'success', details: det });
                             }
                         }
                     }
-                } catch(errKonf) { console.log("Riwayat konfirmasi error:", errKonf); }
+                }catch(e){console.log(e);}
 
-                // 3. Fetch History dari Sheet PO (MENUNGGU KONFIRMASI)
+                // Fetch Sheet PO (Gid 1793853195) -> Menunggu
                 try {
-                    const poRes = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vRTbkov_lwEit8zx4ZDnejhi5FvGXTFAp4xxDM-NinByMm9QVQuRK2ssk9GCtKaaItXwBKo1nqU0c9q/pub?gid=1793853195&single=true&output=csv');
-                    const poText = await poRes.text();
-                    const poLines = poText.split('\n');
-                    
-                    for(let p = 1; p < poLines.length; p++) {
-                        if(!poLines[p].trim()) continue;
-                        const row = parseCSVRow(poLines[p]);
-                        
-                        if(row.length >= 4 && row[3].trim() === currentStudentNIS) {
-                            let details = [];
-                            let totalAmt = 0;
-                            
+                    let pRes = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vRTbkov_lwEit8zx4ZDnejhi5FvGXTFAp4xxDM-NinByMm9QVQuRK2ssk9GCtKaaItXwBKo1nqU0c9q/pub?gid=1793853195&single=true&output=csv');
+                    let pText = await pRes.text(); let pLines = pText.split('\n');
+                    for(let p=1; p<pLines.length; p++){
+                        let row = parseCSVRow(pLines[p]);
+                        if(row.length >= 4 && row[3].trim() === currentStudentNIS){
+                            let tot = 0; let det = [];
                             mapCols.forEach(c => {
-                                if(row[c.idx]) {
-                                    let amt = parseInt(row[c.idx].replace(/[^0-9]/g, ''));
-                                    if(!isNaN(amt) && amt > 0) {
-                                        totalAmt += amt;
-                                        let title = c.title;
-                                        if(c.ketIdx && row[c.ketIdx] && row[c.ketIdx].trim() !== '') {
-                                            title += ` (${row[c.ketIdx].trim()})`;
-                                        }
-                                        details.push({title: title, amount: amt});
-                                        
-                                        // Ubah ke pending JIKA statusnya belum lunas
-                                        let actBill = appDB.bills.find(b => b.code === c.code);
-                                        if(actBill && actBill.status === 'unpaid') {
-                                            actBill.status = 'pending';
-                                        }
-                                    }
-                                }
+                                if(row[c.idx]){ let amt = parseInt(row[c.idx].replace(/[^0-9]/g,"")); if(amt>0){ tot+=amt; det.push({title:c.title, amount:amt}); let b=appDB.bills.find(x=>x.code===c.code); if(b && b.status==='unpaid') b.status='pending'; } }
                             });
-
-                            if(totalAmt > 0) {
-                                appDB.history.unshift({
-                                    id: 'TX-' + (Math.floor(Math.random()*90000) + 10000),
-                                    date: row[2] || '-',
-                                    title: details.length > 1 ? 'Multi Tagihan' : (details[0] ? details[0].title : 'Pembayaran'),
-                                    amount: totalAmt,
-                                    method: 'Pembayaran App',
-                                    status: 'pending',
-                                    details: details
-                                });
-                            }
+                            if(tot>0) appDB.history.unshift({ id: 'TX-'+Math.floor(Math.random()*90000), date: row[2], title: det.length>1?'Multi Tagihan':det[0].title, amount: tot, status: 'pending', details: det });
                         }
                     }
-                } catch(errPO) { console.log("Riwayat PO error:", errPO); }
+                }catch(e){console.log(e);}
 
-                closeMessageBox();
-                currentUserRole = 'student';
-                selectedBillIds = []; // Reset seleksi
-                showScreen('screen-home');
-
-            } catch (error) {
-                console.error(error);
-                showMessageBox('Error', 'Gagal memuat data. Periksa internet Anda.', 'fa-wifi', 'bg-red-50 text-danger', 'Tutup');
-            }
+                closeMessageBox(); appDB.userRole = 'student'; showScreen('screen-home');
+            } catch(e) { showMessageBox('Gagal', 'Terjadi kesalahan koneksi.', 'fa-wifi', 'bg-red-50 text-danger'); }
         }
 
-        function logout() {
-            currentUserRole = 'guest';
-            showScreen('screen-login');
-            document.getElementById('loginForm').reset();
-        }
-
-        function renderHomeMenu() {
-            // Update Dashboard Profile
-            document.getElementById('home-user-name').innerText = `Ayah/Bunda ${currentStudentName}`;
-            document.getElementById('home-student-class').innerText = currentStudentClass;
-            document.getElementById('home-student-info').innerText = `${currentStudentName} (NIS: ${currentStudentNIS})`;
-            
-            document.getElementById('profile-name').innerText = `Ayah/Bunda ${currentStudentName}`;
-            document.getElementById('profile-student').innerText = `Wali dari ${currentStudentName}`;
-
-            // Realtime Month
-            const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-            const currentMonthIdx = new Date().getMonth();
-            const currentMonthName = monthNames[currentMonthIdx];
-            
-            document.getElementById('label-tunggakan').innerText = `Tagihan Bulan ${currentMonthName}`;
-
-            // Hitung Multiplier (Misal tahun ajaran mulai Juli = idx 6)
-            let multiplier = 1;
-            const hasHistory = appDB.history.length > 0;
-            if (currentMonthIdx >= 6) { multiplier = currentMonthIdx - 6 + 1; } 
-            else { multiplier = currentMonthIdx + 7; }
-            if (hasHistory) multiplier = 1;
-
-            const akumulasiList = ['SPP', 'KELAS TAHFIDZ PLUS', 'KELAS TAHFIDZ', 'KELAS ICP', 'ICP SORE'];
-            
-            let totalAktif = 0;
-            let countAktif = 0;
-            let anyPending = false;
-
-            appDB.bills.forEach(b => {
-                if(b.status === 'unpaid' || b.status === 'pending') {
-                    if(b.status === 'pending') anyPending = true;
-                    let amt = b.amount;
-                    if(akumulasiList.includes(b.baseTitle.toUpperCase()) && !hasHistory && multiplier > 1) {
-                        amt = b.amount * multiplier;
-                    }
-                    totalAktif += amt;
-                    countAktif++;
-                }
-            });
-
-            document.getElementById('home-total-bill').innerText = formatCurrency(totalAktif);
-            document.getElementById('home-tunggakan').innerText = countAktif + ' Tagihan';
-            
-            // Status Tagihan Dashboard
-            const statusBox = document.getElementById('home-bill-status');
-            if(countAktif === 0) {
-                statusBox.className = "bg-green-500/20 text-green-100 border border-green-400/30 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 backdrop-blur-sm";
-                statusBox.innerHTML = '<i class="fas fa-check-circle"></i> LUNAS';
-            } else if (anyPending) {
-                statusBox.className = "bg-orange-500/20 text-orange-100 border border-orange-400/30 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 backdrop-blur-sm";
-                statusBox.innerHTML = '<i class="fas fa-clock"></i> MENUNGGU';
-            } else {
-                statusBox.className = "bg-red-500/20 text-red-100 border border-red-400/30 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 backdrop-blur-sm";
-                statusBox.innerHTML = '<i class="fas fa-exclamation-circle"></i> BELUM LUNAS';
-            }
-
-            const lastSuccess = appDB.history.find(h => h.status === 'success');
-            document.getElementById('home-last-paid').innerText = lastSuccess ? lastSuccess.date : '-';
-
-            // Menu Rendering
-            const grid = document.getElementById('home-menu-grid');
-            grid.innerHTML = '';
-            appDB.menus.forEach(m => {
-                let iconHtml = m.icon.startsWith('http') || m.icon.startsWith('data:') 
-                    ? `<img src="${m.icon}" class="w-6 h-6 object-contain">`
-                    : `<i class="fas ${m.icon} text-xl"></i>`;
-                
-                grid.innerHTML += `
-                    <div class="flex flex-col items-center gap-2" onclick="${m.target !== '#' ? `showScreen('${m.target}')` : ''}">
-                        <div class="w-12 h-12 bg-white rounded-2xl shadow-soft flex items-center justify-center text-primary border border-gray-50 cursor-pointer hover:-translate-y-1 transition">
-                            ${iconHtml}
-                        </div>
-                        <span class="text-[10px] font-medium text-center leading-tight">${m.name}</span>
-                    </div>`;
-            });
-        }
-
-        function renderBills() {
-            const container = document.getElementById('bills-container');
-            container.innerHTML = '';
-            const unpaidBills = appDB.bills.filter(b => b.status === 'unpaid' || b.status === 'pending');
-            
-            if(unpaidBills.length === 0) {
-                container.innerHTML = `<div class="text-center py-10 text-gray-500 bg-white rounded-xl shadow-sm border border-gray-100">Alhamdulillah, tidak ada tagihan.</div>`;
-                return;
-            }
-
-            const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-            const currentMonthIdx = new Date().getMonth();
-            const currentMonthName = monthNames[currentMonthIdx];
-            const hasHistory = appDB.history.length > 0;
-            
-            let multiplier = 1;
-            if (currentMonthIdx >= 6) { multiplier = currentMonthIdx - 6 + 1; } 
-            else { multiplier = currentMonthIdx + 7; }
-            if (hasHistory) multiplier = 1;
-
-            const akumulasiList = ['SPP', 'KELAS TAHFIDZ PLUS', 'KELAS TAHFIDZ', 'KELAS ICP', 'ICP SORE'];
-            
-            let listHTML = '';
-            unpaidBills.forEach(b => {
-                let amt = b.amount;
-                let tStr = b.title;
-                
-                if (akumulasiList.includes(b.baseTitle.toUpperCase())) {
-                    if (!hasHistory && multiplier > 1) {
-                        amt = b.amount * multiplier;
-                        tStr += ` (Juli - ${currentMonthName})`;
-                    } else {
-                        tStr += ` (${currentMonthName})`;
-                    }
-                }
-
-                let isChecked = selectedBillIds.includes(b.id) ? 'checked' : '';
-                let stBadge = b.status === 'pending' 
-                    ? `<span class="text-[9px] bg-orange-100 text-accent px-2 py-0.5 rounded border border-orange-200 ml-2">Menunggu Konfirmasi</span>` 
-                    : '';
-                let isDisabled = b.status === 'pending' ? 'disabled' : '';
-                if(b.status === 'pending') isChecked = 'checked'; // Auto check if pending
-
-                listHTML += `
-                    <label class="flex items-start gap-3 p-4 bg-white border border-gray-100 rounded-xl mb-3 cursor-pointer hover:border-primary transition group shadow-sm">
-                        <input type="checkbox" class="bill-checkbox w-5 h-5 mt-0.5 text-primary rounded focus:ring-primary" value="${b.id}" onchange="recalcTotal()" ${isChecked} ${isDisabled}>
-                        <div class="flex-1">
-                            <h4 class="text-sm font-bold text-gray-800 leading-tight">${tStr} ${stBadge}</h4>
-                            <p class="text-sm font-bold text-primary mt-1" data-amount="${amt}" data-title="${tStr}">${formatCurrency(amt)}</p>
-                        </div>
-                    </label>`;
-            });
-
-            container.innerHTML = `
-                <div class="mb-4">
-                    <h3 class="text-sm font-bold text-gray-800">Pilih Tagihan</h3>
-                    <p class="text-[10px] text-gray-500">Centang tagihan yang ingin dibayar.</p>
-                </div>
-                ${listHTML}
-                <div class="bg-primary text-white p-5 rounded-2xl shadow-lg mt-6 flex justify-between items-center sticky bottom-24 z-40">
-                    <div>
-                        <p class="text-xs text-blue-200">Total Pembayaran</p>
-                        <h2 class="text-xl font-bold" id="bill-bottom-total">Rp 0</h2>
-                    </div>
-                    <button onclick="goToCheckoutAll()" class="bg-white text-primary text-sm font-bold px-6 py-3 rounded-xl shadow-md active:scale-95 transition">Bayar</button>
-                </div>`;
-            recalcTotal();
-        }
-
-        function recalcTotal() {
-            const checkboxes = document.querySelectorAll('.bill-checkbox:checked');
-            let total = 0;
-            selectedBillIds = [];
-            checkboxes.forEach(cb => {
-                selectedBillIds.push(cb.value);
-                total += parseInt(cb.nextElementSibling.querySelector('p').getAttribute('data-amount'));
-            });
-            document.getElementById('bill-bottom-total').innerText = formatCurrency(total);
-        }
-
-        function goToCheckoutAll() {
-            if(selectedBillIds.length === 0) return alert("Pilih minimal 1 tagihan untuk dibayar.");
-            
-            let totalAmt = 0;
-            let detailTexts = [];
-
-            const checkboxes = document.querySelectorAll('.bill-checkbox:checked');
-            checkboxes.forEach(cb => {
-                let amt = parseInt(cb.nextElementSibling.querySelector('p').getAttribute('data-amount'));
-                let title = cb.nextElementSibling.querySelector('p').getAttribute('data-title');
-                totalAmt += amt;
-                detailTexts.push(title);
-            });
-
-            currentBillToPay = {
-                title: detailTexts.join(', '),
-                amount: totalAmt,
-                type: 'Multiple'
-            };
-
-            document.getElementById('checkout-student-info').innerHTML = `${currentStudentName}<br><span class="text-xs text-gray-400 font-normal">Kelas ${currentStudentClass}</span>`;
-            document.getElementById('checkout-title').innerText = currentBillToPay.title;
-            document.getElementById('checkout-amount').innerText = formatCurrency(currentBillToPay.amount);
-            document.getElementById('checkout-total').innerText = formatCurrency(currentBillToPay.amount);
-
-            showScreen('screen-checkout');
-        }
-
-        function processPayment() {
-            const method = document.querySelector('input[name="payment_method"]:checked').value;
-            if (method === 'Tunai') {
-                finalizePayment('pending');
-            } else {
-                document.getElementById('instruction-amount').innerText = formatCurrency(currentBillToPay.amount);
-                document.getElementById('instruction-qris-area').classList.toggle('hidden', method !== 'QRIS');
-                document.getElementById('instruction-va-area').classList.toggle('hidden', method !== 'Transfer');
-                showScreen('screen-instruction');
-            }
-        }
-
-        async function finalizePayment(statusStr) {
-            showMessageBox('Memproses', 'Mengirim data ke server...', 'fa-spinner fa-spin', 'text-primary bg-blue-50', '', 'hidden');
-            const method = document.querySelector('input[name="payment_method"]:checked').value;
-            
-            const payloadData = {
-                token: currentStudentToken,
-                date: new Date().toLocaleString('id-ID'),
-                nis: currentStudentNIS,
-                nama: currentStudentName,
-                kelas: currentStudentClass,
-                bps: '', sppJuli: '', spp: '', ketSpp: '', daftarUlang1: '', daftarUlang2: '', daftarUlang3: '', tahfidzPlus: '', ketTahfidzPlus: '', tahfidz: '', icp: '', icpSore: '', tanggungan: ''
-            };
-
-            const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-            const currentMonthIdx = new Date().getMonth();
-            const currentMonthName = monthNames[currentMonthIdx];
-            const hasHistory = appDB.history.length > 0;
-            
-            let multiplier = 1;
-            if (currentMonthIdx >= 6) { multiplier = currentMonthIdx - 6 + 1; } 
-            else { multiplier = currentMonthIdx + 7; }
-            if (hasHistory) multiplier = 1;
-
-            const akumulasiList = ['SPP', 'KELAS TAHFIDZ PLUS', 'KELAS TAHFIDZ', 'KELAS ICP', 'ICP SORE'];
-            let detailsToSave = [];
-
-            selectedBillIds.forEach(id => {
-                let b = appDB.bills.find(x => x.id === id);
-                if(b) {
-                    let amt = b.amount;
-                    let bTitle = b.title;
-                    if (akumulasiList.includes(b.baseTitle.toUpperCase())) {
-                        if (!hasHistory && multiplier > 1) {
-                            amt = b.amount * multiplier;
-                            bTitle += ` (Juli - ${currentMonthName})`;
-                        } else {
-                            bTitle += ` (${currentMonthName})`;
-                        }
-                    }
-
-                    payloadData[b.code] = amt.toString();
-                    
-                    // Ekstraksi keterangan
-                    if(b.code === 'spp') {
-                        payloadData.ketSpp = (!hasHistory && multiplier > 1) ? `Juli - ${currentMonthName}` : currentMonthName;
-                    }
-                    if(b.code === 'tahfidzPlus') {
-                        payloadData.ketTahfidzPlus = (!hasHistory && multiplier > 1) ? `Juli - ${currentMonthName}` : currentMonthName;
-                    }
-
-                    detailsToSave.push({ title: bTitle, amount: amt });
-                    b.status = 'pending'; // Update local status
-                }
-            });
-
-            try {
-                // Post to GAS (Menuju Sheet PO)
-                await fetch(GAS_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify(payloadData)
-                });
-            } catch (err) {
-                console.log('Error POST:', err); 
-            }
-
-            const txId = 'SDG-' + Math.floor(100000 + Math.random() * 900000);
-            
-            appDB.history.unshift({
-                id: txId,
-                date: new Date().toLocaleDateString('id-ID'),
-                title: currentBillToPay.title,
-                amount: currentBillToPay.amount,
-                method: method,
-                status: 'pending',
-                details: detailsToSave
-            });
-
-            closeMessageBox();
-            
-            document.getElementById('receipt-tx').innerText = txId;
-            document.getElementById('receipt-student').innerText = `${currentStudentName} (${currentStudentClass})`;
-            document.getElementById('receipt-title').innerText = currentBillToPay.title;
-            document.getElementById('receipt-total').innerText = formatCurrency(currentBillToPay.amount);
-            
-            showScreen('screen-receipt');
-        }
-
-        function renderHistory() {
-            const container = document.getElementById('history-container');
-            container.innerHTML = '';
-            
-            if(appDB.history.length === 0) {
-                container.innerHTML = `<div class="text-center py-10 text-gray-500 bg-white rounded-xl shadow-sm border border-gray-100">Belum ada riwayat transaksi.</div>`;
-                return;
-            }
-
-            appDB.history.forEach((h, index) => {
-                let stClass = h.status === 'success' ? 'text-success bg-green-50 border-green-100' : 'text-accent bg-orange-50 border-orange-100';
-                let stText = h.status === 'success' ? 'Berhasil' : 'Menunggu Konfirmasi';
-                let iconSt = h.status === 'success' ? 'fa-check' : 'fa-clock';
-                
-                let detailsHtml = '';
-                if(h.details && h.details.length > 0) {
-                    h.details.forEach(d => {
-                        detailsHtml += `<div class="flex justify-between text-xs text-gray-500 mb-1 border-b border-dashed border-gray-100 pb-1"><span>- ${d.title}</span><span>${formatCurrency(d.amount)}</span></div>`;
-                    });
-                } else {
-                    detailsHtml = `<div class="text-xs text-gray-500">- ${h.title}</div>`;
-                }
-
-                // Tombol Unduh Struk HANYA JIKA SUCCESS
-                let btnUnduh = h.status === 'success' 
-                    ? `<button onclick="unduhStruk(${index})" class="text-xs font-bold text-primary bg-blue-50 px-3 py-1.5 rounded border border-blue-100 mt-3 w-full"><i class="fas fa-print mr-1"></i> Unduh Struk</button>` 
-                    : '';
-
-                container.innerHTML += `
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-4">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <h4 class="text-sm font-bold text-gray-800 leading-tight">${h.title}</h4>
-                                <p class="text-[10px] text-gray-400 mt-0.5">${h.date} • ${h.method}</p>
-                            </div>
-                            <div class="text-right shrink-0">
-                                <p class="text-sm font-bold text-gray-800">${formatCurrency(h.amount)}</p>
-                                <p class="text-[9px] font-bold px-2 py-0.5 rounded border ${stClass} mt-1 inline-flex items-center gap-1"><i class="fas ${iconSt}"></i> ${stText}</p>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-3 bg-gray-50 p-3 rounded-lg border border-gray-100">
-                            <p class="text-[10px] font-bold text-gray-500 mb-2">Rincian:</p>
-                            ${detailsHtml}
-                        </div>
-                        
-                        ${btnUnduh}
-                    </div>`;
-            });
-        }
-
-        function unduhStruk(index) {
-            const h = appDB.history[index];
-            const tempDiv = document.createElement('div');
-            
-            let detailsHtml = '';
-            if(h.details && h.details.length > 0) {
-                h.details.forEach(d => {
-                    detailsHtml += `<li style="display: flex; justify-content: space-between; margin-bottom: 5px;"><span>${d.title}</span> <span>${formatCurrency(d.amount)}</span></li>`;
-                });
-            } else {
-                detailsHtml = `<li style="display: flex; justify-content: space-between; margin-bottom: 5px;"><span>${h.title}</span> <span>${formatCurrency(h.amount)}</span></li>`;
-            }
-
-            tempDiv.innerHTML = `
-                <div style="padding: 20px; font-family: sans-serif; color: #333; width: 100%; max-width: 400px;">
-                    <div style="text-align: center; border-bottom: 2px dashed #ccc; padding-bottom: 10px; margin-bottom: 20px;">
-                        <h2 style="margin: 0; color: #1E3A5F;">SD MUHAMMADIYAH SUDAGARAN</h2>
-                        <p style="margin: 5px 0 0; font-size: 12px; color: #666;">BUKTI PEMBAYARAN RESMI</p>
-                    </div>
-                    <table style="width: 100%; font-size: 12px; margin-bottom: 20px;">
-                        <tr><td style="color:#666; padding-bottom:5px;">No. Ref</td><td style="text-align:right; font-weight:bold;">${h.id}</td></tr>
-                        <tr><td style="color:#666; padding-bottom:5px;">Tanggal</td><td style="text-align:right;">${h.date}</td></tr>
-                        <tr><td style="color:#666; padding-bottom:5px;">Siswa</td><td style="text-align:right;">${currentStudentName}</td></tr>
-                        <tr><td style="color:#666; padding-bottom:5px;">NIS/Kelas</td><td style="text-align:right;">${currentStudentNIS} / ${currentStudentClass}</td></tr>
-                        <tr><td style="color:#666; padding-bottom:5px;">Metode</td><td style="text-align:right;">${h.method}</td></tr>
-                    </table>
-                    <div style="border-top: 1px solid #eee; padding-top: 10px;">
-                        <p style="font-size: 12px; font-weight: bold; margin-bottom: 10px;">Rincian:</p>
-                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 12px;">
-                            ${detailsHtml}
-                        </ul>
-                    </div>
-                    <div style="border-top: 2px dashed #ccc; margin-top: 20px; padding-top: 15px; text-align: center;">
-                        <p style="margin: 0; font-size: 18px; font-weight: bold; color: #1E3A5F;">TOTAL: ${formatCurrency(h.amount)}</p>
-                        <p style="margin: 10px 0 0; font-size: 10px; color: #aaa;">Status: LUNAS BERHASIL<br>Terima kasih atas pembayaran Anda.</p>
-                    </div>
-                </div>`;
-            
-            document.body.appendChild(tempDiv);
-            
-            const opt = {
-                margin: 0.2,
-                filename: `Struk_${h.id}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'in', format: 'a5', orientation: 'portrait' }
-            };
-
-            html2pdf().set(opt).from(tempDiv).save().then(() => {
-                document.body.removeChild(tempDiv);
-            });
-        }
-
-        // --- ADMIN FUNCTIONS (HANYA KELOLA MENU) ---
-        function renderAdminMenu() {
-            const container = document.getElementById('admin-menu-list');
-            container.innerHTML = '';
-            appDB.menus.forEach(m => {
-                let iconHtml = m.icon.startsWith('http') || m.icon.startsWith('data:') 
-                    ? `<img src="${m.icon}" class="w-5 h-5 object-contain">`
-                    : `<i class="fas ${m.icon} w-5 text-center"></i>`;
-                container.innerHTML += `
-                    <div class="p-4 border-b border-gray-100 flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-blue-50 text-primary rounded flex items-center justify-center">
-                                ${iconHtml}
-                            </div>
-                            <div>
-                                <p class="text-sm font-bold text-gray-800">${m.name}</p>
-                                <p class="text-[10px] text-gray-400 font-mono">${m.target}</p>
-                            </div>
-                        </div>
-                        <button onclick="openMenuEditor('${m.id}')" class="text-xs font-bold text-primary bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-100">Edit</button>
-                    </div>`;
-            });
-        }
-
-        function openMenuEditor(id) {
-            const modal = document.getElementById('modal-edit-menu');
-            const content = document.getElementById('modal-edit-content');
-            
-            const pGrid = document.getElementById('icon-presets');
-            pGrid.innerHTML = PRESET_ICONS.map(i => `
-                <div onclick="document.getElementById('edit-menu-icon').value = '${i}'" class="w-10 h-10 bg-gray-50 rounded border border-gray-200 flex items-center justify-center text-gray-500 cursor-pointer hover:bg-blue-50 hover:text-primary hover:border-blue-200 transition">
-                    <i class="fas ${i}"></i>
-                </div>
-            `).join('');
-
-            if(id === 'new') {
-                document.getElementById('modal-menu-title').innerText = "Tambah Menu Baru";
-                document.getElementById('edit-menu-id').value = "";
-                document.getElementById('edit-menu-name').value = "";
-                document.getElementById('edit-menu-icon').value = "";
-                document.getElementById('btn-delete-menu').classList.add('hidden');
-            } else {
-                let m = appDB.menus.find(x => x.id === id);
-                document.getElementById('modal-menu-title').innerText = "Edit Menu";
-                document.getElementById('edit-menu-id').value = m.id;
-                document.getElementById('edit-menu-name').value = m.name;
-                document.getElementById('edit-menu-icon').value = m.icon;
-                document.getElementById('edit-menu-target').value = m.target;
-                document.getElementById('btn-delete-menu').classList.remove('hidden');
-            }
-
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                content.classList.remove('translate-y-full');
-            }, 10);
-        }
-
-        function closeMenuEditor() {
-            const modal = document.getElementById('modal-edit-menu');
-            const content = document.getElementById('modal-edit-content');
-            modal.classList.add('opacity-0');
-            content.classList.add('translate-y-full');
-            setTimeout(() => { modal.classList.add('hidden'); }, 300);
-        }
-
-        function saveMenu() {
-            let id = document.getElementById('edit-menu-id').value;
-            let n = document.getElementById('edit-menu-name').value;
-            let i = document.getElementById('edit-menu-icon').value;
-            let t = document.getElementById('edit-menu-target').value;
-            
-            if(!n || !i) return alert("Nama dan Ikon harus diisi!");
-
-            if(id) {
-                let m = appDB.menus.find(x => x.id === id);
-                m.name = n; m.icon = i; m.target = t;
-            } else {
-                appDB.menus.push({ id: 'M-' + Date.now(), name: n, icon: i, target: t });
-            }
-            closeMenuEditor();
-            renderAdminMenu();
-        }
-
-        function deleteMenu() {
-            let id = document.getElementById('edit-menu-id').value;
-            appDB.menus = appDB.menus.filter(m => m.id !== id);
-            closeMenuEditor();
-            renderAdminMenu();
-        }
-
-        function handleAdminIconUpload(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('edit-menu-icon').value = e.target.result;
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        // --- Core UI Navigation ---
-        function showScreen(id) {
+        function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+            document.getElementById(screenId).classList.add('active');
             
             document.getElementById('bottom-nav').classList.add('hidden');
             document.getElementById('bottom-nav-admin').classList.add('hidden');
 
-            if (currentUserRole === 'student' && !['screen-login', 'screen-checkout', 'screen-instruction', 'screen-receipt'].includes(id)) {
-                document.getElementById('bottom-nav').classList.remove('hidden');
-                document.querySelectorAll('.nav-btn').forEach(btn => {
-                    if (btn.dataset.target === id) {
-                        btn.classList.add('text-primary');
-                        btn.classList.remove('text-gray-400');
-                    } else {
-                        btn.classList.remove('text-primary');
-                        btn.classList.add('text-gray-400');
-                    }
-                });
-            } else if (currentUserRole === 'admin' && !['screen-login'].includes(id)) {
-                document.getElementById('bottom-nav-admin').classList.remove('hidden');
+            if(!['screen-login','screen-checkout','screen-instruction','screen-receipt'].includes(screenId)){
+                if(appDB.userRole === 'admin') document.getElementById('bottom-nav-admin').classList.remove('hidden');
+                else {
+                    document.getElementById('bottom-nav').classList.remove('hidden');
+                    document.querySelectorAll('.nav-btn').forEach(btn => {
+                        if(btn.dataset.target === screenId){ btn.classList.add('text-primary'); btn.classList.remove('text-gray-400'); }
+                        else { btn.classList.add('text-gray-400'); btn.classList.remove('text-primary'); }
+                    });
+                }
             }
 
-            if (id === 'screen-home') renderHomeMenu();
-            if (id === 'screen-bills') renderBills();
-            if (id === 'screen-history') renderHistory();
-            if (id === 'screen-admin-menu') renderAdminMenu();
-            
+            if(screenId === 'screen-home' && appDB.userRole === 'student') {
+                document.getElementById('home-user-name').innerText = `Ayah/Bunda ${currentStudentName}`;
+                document.getElementById('home-student-class').innerText = currentStudentClass;
+                document.getElementById('home-student-info').innerText = `${currentStudentName} (NIS: ${currentStudentNIS})`;
+                document.getElementById('profile-name').innerText = `Ayah/Bunda ${currentStudentName}`;
+                document.getElementById('profile-student').innerText = `${currentStudentName} (NIS: ${currentStudentNIS})`;
+
+                let bulan = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'][new Date().getMonth()];
+                document.getElementById('label-tunggakan').innerText = `Tagihan Bulan ${bulan}`;
+
+                // Multiplier (Bulan)
+                let mult = (new Date().getMonth() >= 6) ? new Date().getMonth() - 5 : new Date().getMonth() + 7;
+                let mList = ['spp','tahfidzPlus','tahfidz','icp','icpSore'];
+                
+                let unpaid = 0; let count = 0;
+                appDB.bills.forEach(b => {
+                    if(b.status === 'unpaid' || b.status === 'pending') {
+                        let finalAmt = b.amount; if(mList.includes(b.code) && appDB.history.length === 0) finalAmt = b.amount * mult;
+                        unpaid += finalAmt; count++;
+                    }
+                });
+
+                document.getElementById('home-total-bill').innerText = formatCurrency(unpaid);
+                document.getElementById('home-tunggakan').innerText = count + " Tagihan";
+                
+                let bs = document.getElementById('home-bill-status');
+                if(count === 0) { bs.className='bg-green-500/20 text-green-100 border border-green-400/30 text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1 backdrop-blur-sm'; bs.innerHTML='<i class="fas fa-check-circle"></i> LUNAS'; }
+                else if(appDB.bills.some(b=>b.status==='pending')){ bs.className='bg-orange-500/20 text-orange-100 border border-orange-400/30 text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1 backdrop-blur-sm'; bs.innerHTML='<i class="fas fa-clock"></i> MENUNGGU'; }
+                else { bs.className='bg-red-500/20 text-red-100 border border-red-400/30 text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1 backdrop-blur-sm'; bs.innerHTML='<i class="fas fa-exclamation-circle"></i> BELUM LUNAS'; }
+
+                let lh = appDB.history.find(x=>x.status==='success'); document.getElementById('home-last-paid').innerText = lh ? lh.date : '-';
+
+                let grid = document.getElementById('home-menu-grid'); grid.innerHTML = '';
+                appDB.menuItems.forEach(m => {
+                    let css = m.color.split('|'); let act = m.target ? `onclick="showScreen('${m.target}')"` : `onclick="showMessageBox('Info', 'Fitur segera hadir.', 'fa-info-circle', 'bg-blue-50 text-blue-600', 'Tutup')"`;
+                    grid.innerHTML += `<div class="flex flex-col items-center gap-2" ${act}><div class="w-12 h-12 ${css[1]} rounded-2xl shadow-soft flex items-center justify-center ${css[0]} border border-gray-100 cursor-pointer"><i class="fas ${m.icon} text-xl"></i></div><span class="text-[10px] font-medium text-center leading-tight">${m.title}</span></div>`;
+                });
+            }
+
+            if(screenId === 'screen-bills') {
+                selectedBillIds = []; document.getElementById('bills-selected-total').innerText = 'Rp 0';
+                document.getElementById('btn-pay-selected').disabled = true;
+                let cont = document.getElementById('bills-container'); cont.innerHTML = '';
+                let ub = appDB.bills.filter(b=>b.status!=='paid');
+                
+                if(ub.length === 0){
+                    document.getElementById('bill-warning-box').classList.add('hidden');
+                    cont.innerHTML = `<div class="text-center py-10"><i class="fas fa-check-circle text-5xl text-success mb-3"></i><p class="font-bold text-gray-800">Alhamdulillah</p><p class="text-sm text-gray-500">Tidak ada tagihan bulan ini.</p></div>`;
+                } else {
+                    document.getElementById('bill-warning-box').classList.remove('hidden');
+                    let mult = (new Date().getMonth() >= 6) ? new Date().getMonth() - 5 : new Date().getMonth() + 7;
+                    let mList = ['spp','tahfidzPlus','tahfidz','icp','icpSore'];
+
+                    ub.forEach(b => {
+                        let fAmt = b.amount; let note = "";
+                        if(mList.includes(b.code) && appDB.history.length === 0){ fAmt = b.amount * mult; note = `<p class="text-[10px] text-danger bg-red-50 px-2 py-1 rounded inline-block mt-1 mb-1">Belum bayar s.d Bulan Ini (${mult} Bln)</p>`; }
+                        let isP = b.status === 'pending';
+                        let chk = isP ? `<i class="fas fa-clock text-accent text-xl"></i>` : `<input type="checkbox" class="bill-chk w-6 h-6 text-primary rounded focus:ring-primary" value="${b.id}" data-amt="${fAmt}" data-title="${b.title}" data-code="${b.code}" onchange="calcSelectedBills()">`;
+                        cont.innerHTML += `<div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-4 flex gap-4 items-center ${isP?'opacity-70':''}">${chk}<div class="flex-1"><h3 class="font-bold text-gray-800 text-sm">${b.title}</h3>${note}<p class="text-base font-bold text-primary mt-1">${formatCurrency(fAmt)}</p></div></div>`;
+                    });
+                }
+            }
+
+            if(screenId === 'screen-history') {
+                let hc = document.getElementById('history-container'); hc.innerHTML = '';
+                if(appDB.history.length === 0) hc.innerHTML = `<div class="text-center py-10 text-gray-400"><i class="fas fa-box-open text-4xl mb-2"></i><p>Belum ada riwayat.</p></div>`;
+                appDB.history.forEach(h => {
+                    let d = h.details.map(x=>`- ${x.title}: ${formatCurrency(x.amount)}`).join('<br>');
+                    let p = h.status === 'success' ? `<button onclick="downloadPDF('${h.id}')" class="text-[10px] bg-green-50 text-success px-2 py-1 rounded border border-green-100 mt-2"><i class="fas fa-download"></i> Unduh Struk</button>` : '';
+                    hc.innerHTML += `<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-3"><div class="flex justify-between border-b pb-2 mb-2"><h4 class="text-sm font-bold text-gray-800">${h.title}</h4><span class="text-xs font-semibold ${h.status==='success'?'text-success':'text-accent'}">${h.status==='success'?'Berhasil':'Menunggu'}</span></div><div class="flex justify-between items-end"><div class="text-xs text-gray-500">${h.date}<br><div class="mt-1 text-[10px] text-gray-600 leading-tight">${d}</div>${p}</div><p class="text-sm font-bold text-primary">${formatCurrency(h.amount)}</p></div></div>`;
+                });
+            }
+
+            if(screenId === 'screen-admin-dashboard') {
+                let al = document.getElementById('admin-menu-list'); al.innerHTML = '';
+                appDB.menuItems.forEach(m => {
+                    let c = m.color.split('|'); al.innerHTML += `<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-3 flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-lg ${c[1]} flex items-center justify-center ${c[0]}"><i class="fas ${m.icon} text-lg"></i></div><div><h4 class="font-bold text-sm text-gray-800">${m.title}</h4></div></div><button onclick="editMenu(${m.id})" class="text-xs font-bold text-primary px-3 py-1.5 bg-blue-50 rounded-lg">Edit</button></div>`;
+                });
+            }
             document.getElementById('app-container').scrollTop = 0;
         }
 
-        function showMessageBox(title, text, icon, bgClass, btnText, btnHide) {
-            document.getElementById('messageTitle').innerText = title;
-            document.getElementById('messageText').innerText = text;
-            document.getElementById('messageIcon').className = `w-12 h-12 rounded-full mx-auto flex items-center justify-center mb-3 ${bgClass}`;
-            document.getElementById('messageIcon').innerHTML = `<i class="fas ${icon} text-xl"></i>`;
-            
-            const btn = document.getElementById('messageBtn');
-            if (btnHide === 'hidden') {
-                btn.style.display = 'none';
-            } else {
-                btn.style.display = 'block';
-                btn.innerText = btnText || 'OK';
-                btn.className = `w-full py-3 rounded-xl font-semibold transition mt-4 bg-primary text-white`;
+        function calcSelectedBills() {
+            selectedBillIds = []; let total = 0;
+            document.querySelectorAll('.bill-chk:checked').forEach(cb => { selectedBillIds.push(cb); total += parseInt(cb.dataset.amt); });
+            document.getElementById('bills-selected-total').innerText = formatCurrency(total);
+            document.getElementById('btn-pay-selected').disabled = selectedBillIds.length === 0;
+        }
+
+        function processSelectedBills() {
+            let tot = 0; let titles = [];
+            paymentDataPayload = { token: currentStudentToken, date: new Date().toLocaleString('id-ID'), nis: currentStudentNIS, nama: currentStudentName, kelas: currentStudentClass };
+            selectedBillIds.forEach(cb => {
+                tot += parseInt(cb.dataset.amt); titles.push(cb.dataset.title);
+                paymentDataPayload[cb.dataset.code] = cb.dataset.amt;
+            });
+            document.getElementById('checkout-student-info').innerHTML = `${currentStudentName}<br><span class="text-xs text-gray-400 font-normal">${currentStudentClass}</span>`;
+            document.getElementById('checkout-title').innerText = titles.join(', ');
+            document.getElementById('checkout-total').innerText = formatCurrency(tot);
+            document.getElementById('instruction-amount').innerText = formatCurrency(tot);
+            showScreen('screen-checkout');
+        }
+
+        function processPayment() {
+            isFileUploaded = false; document.getElementById('upload-preview').classList.add('hidden');
+            document.getElementById('upload-placeholder').classList.remove('hidden');
+            document.getElementById('receipt-upload').value = '';
+            showScreen('screen-instruction');
+        }
+
+        function handleFileUpload(e) {
+            if(e.target.files[0]){
+                isFileUploaded = true; let r = new FileReader();
+                r.onload = function(ev) { document.getElementById('upload-preview').src = ev.target.result; document.getElementById('upload-preview').classList.remove('hidden'); document.getElementById('upload-placeholder').classList.add('hidden'); };
+                r.readAsDataURL(e.target.files[0]);
             }
-
-            const box = document.getElementById('messageBox');
-            box.classList.remove('hidden');
-            void box.offsetWidth;
-            box.classList.remove('opacity-0');
         }
 
-        function closeMessageBox() {
-            document.getElementById('messageBox').classList.add('opacity-0');
-            setTimeout(() => { document.getElementById('messageBox').classList.add('hidden'); }, 300);
+        function confirmInstruction() {
+            if(!isFileUploaded) { showMessageBox('Peringatan', 'Mohon unggah bukti transfer.', 'fa-exclamation-triangle', 'bg-red-50 text-danger'); return; }
+            showMessageBox('Memproses...', 'Mengirim data ke server.', 'fa-spinner fa-spin', 'text-primary bg-blue-50', '', 'hidden');
+            
+            fetch(GAS_URL, { method: 'POST', body: JSON.stringify(paymentDataPayload) })
+            .then(()=> {
+                closeMessageBox();
+                document.getElementById('receipt-tx').innerText = 'SDG-' + Math.floor(100000 + Math.random() * 900000);
+                document.getElementById('receipt-student').innerText = currentStudentName;
+                document.getElementById('receipt-title').innerText = document.getElementById('checkout-title').innerText;
+                document.getElementById('receipt-total').innerText = document.getElementById('checkout-total').innerText;
+                document.getElementById('receipt-date').innerText = paymentDataPayload.date;
+                
+                selectedBillIds.forEach(cb => { let b=appDB.bills.find(x=>x.id===cb.value); if(b) b.status='pending'; });
+                appDB.history.unshift({ id: document.getElementById('receipt-tx').innerText, date: paymentDataPayload.date, title: document.getElementById('receipt-title').innerText, amount: parseInt(document.getElementById('checkout-total').innerText.replace(/[^0-9]/g,"")), status: 'pending', details: [] });
+                showScreen('screen-receipt');
+            }).catch(()=> { showMessageBox('Gagal', 'Terjadi kesalahan.', 'fa-times', 'bg-red-50 text-danger'); });
         }
-        
+
+        function openMenuModal() {
+            document.getElementById('modal-edit-menu-content').classList.remove('translate-y-full'); document.getElementById('modal-edit-menu').classList.remove('hidden');
+            setTimeout(()=>document.getElementById('modal-edit-menu').classList.remove('opacity-0'), 10);
+            document.getElementById('edit-menu-id').value = ''; document.getElementById('edit-menu-name').value = '';
+            document.getElementById('btn-delete-menu').classList.add('hidden'); renderIcons('fa-circle');
+        }
+        function closeMenuModal() { document.getElementById('modal-edit-menu').classList.add('opacity-0'); document.getElementById('modal-edit-menu-content').classList.add('translate-y-full'); setTimeout(()=>document.getElementById('modal-edit-menu').classList.add('hidden'),300); }
+        function renderIcons(sel) {
+            let ht = ''; PRESET_ICONS.forEach(i => { ht += `<div onclick="document.getElementById('edit-menu-icon').value='${i}'; renderIcons('${i}')" class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-lg border-2 cursor-pointer transition ${i===sel?'border-primary text-primary bg-blue-50':'border-gray-100 text-gray-400'}"><i class="fas ${i}"></i></div>`; });
+            document.getElementById('admin-icon-presets').innerHTML = ht; document.getElementById('edit-menu-icon').value = sel;
+        }
+        function editMenu(id) {
+            let m = appDB.menuItems.find(x=>x.id===id); if(m){ openMenuModal(); document.getElementById('modal-menu-title').innerText='Edit Menu'; document.getElementById('edit-menu-id').value=m.id; document.getElementById('edit-menu-name').value=m.title; document.getElementById('edit-menu-color').value=m.color; document.getElementById('edit-menu-target').value=m.target; renderIcons(m.icon); document.getElementById('btn-delete-menu').classList.remove('hidden'); }
+        }
+        function saveMenu() {
+            let id = document.getElementById('edit-menu-id').value, title = document.getElementById('edit-menu-name').value, icon = document.getElementById('edit-menu-icon').value, color = document.getElementById('edit-menu-color').value, target = document.getElementById('edit-menu-target').value;
+            if(!title) return;
+            if(id) { let ix = appDB.menuItems.findIndex(x=>x.id==id); appDB.menuItems[ix] = {id:parseInt(id), title, icon, color, target}; }
+            else { appDB.menuItems.push({id:Date.now(), title, icon, color, target}); }
+            localStorage.setItem('adminMenu', JSON.stringify(appDB.menuItems)); closeMenuModal(); showScreen('screen-admin-dashboard');
+        }
+        function deleteMenu() { appDB.menuItems = appDB.menuItems.filter(x=>x.id != document.getElementById('edit-menu-id').value); localStorage.setItem('adminMenu', JSON.stringify(appDB.menuItems)); closeMenuModal(); showScreen('screen-admin-dashboard'); }
+
+        function showMessageBox(ti,te,ic,icb,btn,btnc) {
+            document.getElementById('messageTitle').innerText=ti; document.getElementById('messageText').innerText=te; document.getElementById('messageIcon').className=`w-12 h-12 rounded-full mx-auto flex items-center justify-center mb-3 ${icb}`; document.getElementById('messageIcon').innerHTML=`<i class="fas ${ic} text-xl"></i>`;
+            let b = document.getElementById('messageBtn'); if(btnc==='hidden') b.style.display='none'; else { b.style.display='block'; b.innerText=btn||'OK'; b.className=`w-full py-3 rounded-xl font-semibold transition mt-4 bg-primary text-white`; }
+            let x = document.getElementById('messageBox'); x.classList.remove('hidden'); void x.offsetWidth; x.classList.remove('opacity-0');
+        }
+        function closeMessageBox() { document.getElementById('messageBox').classList.add('opacity-0'); setTimeout(()=>document.getElementById('messageBox').classList.add('hidden'),300); }
+        function logout() { appDB.userRole='guest'; showScreen('screen-login'); document.getElementById('loginForm').reset(); }
+        function changePassword() { showMessageBox('Info', 'Fitur ubah password segera hadir.', 'fa-info-circle', 'bg-blue-50 text-blue-600'); }
+
+        function downloadPDF(txId) {
+            let h = appDB.history.find(x=>x.id===txId); if(!h) return;
+            const { jsPDF } = window.jspdf; const doc = new jsPDF();
+            doc.setFontSize(16); doc.text("SD Muhammadiyah Sudagaran Wonosobo", 20, 20);
+            doc.setFontSize(12); doc.text("BUKTI PEMBAYARAN", 20, 30);
+            doc.setFontSize(10); doc.text(`No Transaksi: ${h.id}`, 20, 40); doc.text(`Tanggal: ${h.date}`, 20, 45); doc.text(`Siswa: ${currentStudentName} (${currentStudentClass})`, 20, 50);
+            doc.text("---------------------------------------------------------", 20, 55);
+            let y = 60; h.details.forEach(d => { doc.text(`- ${d.title}`, 20, y); doc.text(`${formatCurrency(d.amount)}`, 150, y); y += 7; });
+            doc.text("---------------------------------------------------------", 20, y); y += 7;
+            doc.setFontSize(12); doc.text("TOTAL LUNAS", 20, y); doc.text(`${formatCurrency(h.amount)}`, 150, y);
+            doc.save(`Struk_${h.id}.pdf`);
+        }
+
+        window.onload = () => showScreen('screen-login');
     </script>
 </body>
 </html>
