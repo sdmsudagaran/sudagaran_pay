@@ -86,7 +86,7 @@
                         <p class="text-xs font-medium text-gray-500 mb-1">Assalamu'alaikum,</p>
                         <h2 class="text-lg font-bold text-primary wrap-text" id="home-user-name">Ayah/Bunda</h2>
                     </div>
-                    <!-- LOGO KECIL DIHAPUS - HANYA BADGE KELAS SAJA -->
+                    <!-- Desain Badge Kelas Bersih (Sesuai Permintaan) -->
                     <div class="flex-shrink-0 pt-2">
                         <div class="bg-accent text-white text-[10px] font-bold px-3 py-1.5 rounded-full border-2 border-white shadow-sm text-center max-w-[90px] wrap-text uppercase" id="home-student-class">-</div>
                     </div>
@@ -136,7 +136,7 @@
                     <span class="bg-red-500 text-white text-[10px] font-bold px-3 py-1 rounded-full border border-red-400">MODE ADMIN</span>
                 </div>
                 <h2 class="text-xl font-bold mb-1">Kelola Fitur Menu</h2>
-                <p class="text-xs text-blue-200">Atur menu dan urutan posisi aplikasi</p>
+                <p class="text-xs text-blue-200">Atur urutan, menu, dan tautan aplikasi</p>
             </div>
             <div class="px-6">
                 <div class="flex justify-end mb-4">
@@ -179,13 +179,32 @@
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-gray-600 mb-1">Arahkan Ke</label>
-                            <select id="edit-menu-target" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm">
-                                <option value="">(Belum Ada)</option>
-                                <option value="screen-bills">Tagihan</option>
-                                <option value="screen-history">Riwayat</option>
+                            <!-- Penambahan Opsi Tautan Luar dan Semua Profil -->
+                            <select id="edit-menu-target" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm" onchange="toggleUrlInput()">
+                                <option value="">(Info Saja)</option>
+                                <option value="screen-bills">Halaman Tagihan</option>
+                                <option value="screen-history">Halaman Riwayat</option>
+                                <option value="screen-profile">Halaman Akun</option>
+                                <option value="url">Tautan Luar / Form</option>
                             </select>
                         </div>
                     </div>
+                    
+                    <!-- Kotak Input URL Eksternal (Hanya muncul jika Tautan Luar dipilih) -->
+                    <div id="url-input-container" class="hidden">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Masukkan Web / Form URL</label>
+                        <input type="url" id="edit-menu-url" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary text-sm" placeholder="https://...">
+                    </div>
+
+                    <!-- Status Toggle Tampilkan/Sembunyikan Menu -->
+                    <div class="flex items-center justify-between bg-gray-50 p-3 rounded-xl border border-gray-100">
+                        <span class="text-xs font-semibold text-gray-600">Tampilkan ke Wali Murid?</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                          <input type="checkbox" id="edit-menu-status" class="sr-only peer" checked>
+                          <div class="w-9 h-5 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+                        </label>
+                    </div>
+
                     <div class="pt-4 flex gap-3">
                         <button id="btn-delete-menu" onclick="deleteMenu()" class="hidden flex-1 bg-red-50 text-danger font-bold py-3 rounded-xl border border-red-100">Hapus</button>
                         <button onclick="saveMenu()" class="flex-1 bg-primary text-white font-bold py-3 rounded-xl shadow-md">Simpan</button>
@@ -414,7 +433,7 @@
         const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRTbkov_lwEit8zx4ZDnejhi5FvGXTFAp4xxDM-NinByMm9QVQuRK2ssk9GCtKaaItXwBKo1nqU0c9q/pub?gid=0&single=true&output=csv';
         const GAS_URL = 'https://script.google.com/macros/s/AKfycbwt7ctBKsBS63kSgJ5fUzIae3cd3ZPG16chkhxcdDt65iDLB0DD36ESSQn95RHnjPeK/exec';
         
-        // Ikon tambahan untuk pendidikan dan keuangan
+        // Peningkatan Preset Ikon Sesuai Permintaan
         const PRESET_ICONS = [
             'fa-graduation-cap', 'fa-book', 'fa-shirt', 'fa-store', 'fa-bus', 'fa-utensils', 'fa-mosque', 
             'fa-laptop', 'fa-futbol', 'fa-medal', 'fa-file-invoice-dollar', 'fa-wallet', 'fa-money-bill', 
@@ -427,11 +446,11 @@
         let appDB = {
             userRole: 'guest',
             menuItems: JSON.parse(localStorage.getItem('adminMenu')) || [
-                { id: 1, title: 'SPP', icon: 'fa-graduation-cap', color: 'text-primary|bg-white', target: 'screen-bills' },
-                { id: 2, title: 'Tahfidz', icon: 'fa-book', color: 'text-primary|bg-white', target: '' },
-                { id: 3, title: 'Kegiatan', icon: 'fa-users', color: 'text-primary|bg-white', target: '' },
-                { id: 7, title: 'Tagihan', icon: 'fa-file-invoice-dollar', color: 'text-blue-600|bg-blue-50', target: 'screen-bills' },
-                { id: 8, title: 'Riwayat', icon: 'fa-history', color: 'text-blue-600|bg-blue-50', target: 'screen-history' }
+                { id: 1, title: 'SPP', icon: 'fa-graduation-cap', color: 'text-primary|bg-white', target: 'screen-bills', isActive: true },
+                { id: 2, title: 'Tahfidz', icon: 'fa-book', color: 'text-primary|bg-white', target: '', isActive: true },
+                { id: 3, title: 'Kegiatan', icon: 'fa-users', color: 'text-primary|bg-white', target: '', isActive: true },
+                { id: 7, title: 'Tagihan', icon: 'fa-file-invoice-dollar', color: 'text-blue-600|bg-blue-50', target: 'screen-bills', isActive: true },
+                { id: 8, title: 'Riwayat', icon: 'fa-history', color: 'text-blue-600|bg-blue-50', target: 'screen-history', isActive: true }
             ],
             bills: [], history: []
         };
@@ -470,6 +489,7 @@
                 for(let i=1; i<lines.length; i++){
                     if(!lines[i].trim()) continue;
                     let row = parseCSVRow(lines[i]);
+                    // Kolom C (2) = NIS, Kolom B (1) = Password
                     if(row.length >= 6 && row[2].trim() === idInput && row[1].trim() === passInput){ foundUser = row; break; }
                 }
 
@@ -481,7 +501,7 @@
                 currentStudentName = foundUser[3].trim(); currentStudentClass = foundUser[5].trim();
                 appDB.bills = []; appDB.history = [];
 
-                // Peta Kolom (Kolom C = 2, dll. A = 0)
+                // Peta Kolom Tagihan Excel
                 const mapCols = [
                     {idx: 6, code: 'bps', title: 'BPS'},
                     {idx: 7, code: 'sppJuli', title: 'SPP Juli'},
@@ -592,9 +612,15 @@
 
                 let lh = appDB.history.find(x=>x.status==='success'); document.getElementById('home-last-paid').innerText = lh ? lh.date : '-';
 
+                // Menampilkan Grid Menu Sesuai Status (Tampil/Sembunyi) dan URL Eksternal
                 let grid = document.getElementById('home-menu-grid'); grid.innerHTML = '';
-                appDB.menuItems.forEach(m => {
-                    let css = m.color.split('|'); let act = m.target ? `onclick="showScreen('${m.target}')"` : `onclick="showMessageBox('Info', 'Fitur segera hadir.', 'fa-info-circle', 'bg-blue-50 text-blue-600', 'Tutup')"`;
+                appDB.menuItems.filter(m => m.isActive !== false).forEach(m => {
+                    let css = m.color.split('|'); 
+                    let act = '';
+                    if(m.target === 'url' && m.url) act = `onclick="window.open('${m.url}', '_blank')"`;
+                    else if(m.target) act = `onclick="showScreen('${m.target}')"`;
+                    else act = `onclick="showMessageBox('Info', 'Fitur segera hadir.', 'fa-info-circle', 'bg-blue-50 text-blue-600', 'Tutup')"`;
+                    
                     grid.innerHTML += `<div class="flex flex-col items-center gap-2" ${act}><div class="w-12 h-12 ${css[1]} rounded-2xl shadow-soft flex items-center justify-center ${css[0]} border border-gray-100 cursor-pointer"><i class="fas ${m.icon} text-xl"></i></div><span class="text-[10px] font-medium text-center leading-tight">${m.title}</span></div>`;
                 });
             }
@@ -633,14 +659,19 @@
                 });
             }
 
+            // Implementasi Fitur Naik Turun dan Status Admin
             if(screenId === 'screen-admin-dashboard') {
                 let al = document.getElementById('admin-menu-list'); al.innerHTML = '';
                 appDB.menuItems.forEach((m, index) => {
                     let c = m.color.split('|'); 
+                    // Tombol Atur Posisi (Panah)
                     let upBtn = index > 0 ? `<button onclick="moveMenu(${index}, -1)" class="text-gray-400 hover:text-primary px-2 transition"><i class="fas fa-arrow-up"></i></button>` : `<div class="w-7"></div>`;
                     let downBtn = index < appDB.menuItems.length - 1 ? `<button onclick="moveMenu(${index}, 1)" class="text-gray-400 hover:text-primary px-2 transition"><i class="fas fa-arrow-down"></i></button>` : `<div class="w-7"></div>`;
                     
-                    al.innerHTML += `<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-3 flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-lg ${c[1]} flex items-center justify-center ${c[0]}"><i class="fas ${m.icon} text-lg"></i></div><div><h4 class="font-bold text-sm text-gray-800">${m.title}</h4></div></div><div class="flex items-center">${upBtn}${downBtn}<button onclick="editMenu(${m.id})" class="text-xs font-bold text-primary px-3 py-1.5 bg-blue-50 rounded-lg ml-2">Edit</button></div></div>`;
+                    // Badge Tampil / Sembunyi
+                    let statusBadge = m.isActive !== false ? `<span class="text-[8px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full ml-2">Tampil</span>` : `<span class="text-[8px] bg-gray-200 text-gray-500 px-2 py-0.5 rounded-full ml-2">Sembunyi</span>`;
+                    
+                    al.innerHTML += `<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-3 flex items-center justify-between ${m.isActive===false?'opacity-60':''}"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-lg ${c[1]} flex items-center justify-center ${c[0]}"><i class="fas ${m.icon} text-lg"></i></div><div><h4 class="font-bold text-sm text-gray-800 flex items-center">${m.title} ${statusBadge}</h4></div></div><div class="flex items-center">${upBtn}${downBtn}<button onclick="editMenu(${m.id})" class="text-xs font-bold text-primary px-3 py-1.5 bg-blue-50 rounded-lg ml-2 shadow-sm border border-blue-100">Edit</button></div></div>`;
                 });
             }
             document.getElementById('app-container').scrollTop = 0;
@@ -710,27 +741,78 @@
             showScreen('screen-admin-dashboard');
         }
 
+        function toggleUrlInput() {
+            const target = document.getElementById('edit-menu-target').value;
+            if(target === 'url') { document.getElementById('url-input-container').classList.remove('hidden'); }
+            else { document.getElementById('url-input-container').classList.add('hidden'); }
+        }
+
         function openMenuModal() {
             document.getElementById('modal-edit-menu-content').classList.remove('translate-y-full'); document.getElementById('modal-edit-menu').classList.remove('hidden');
             setTimeout(()=>document.getElementById('modal-edit-menu').classList.remove('opacity-0'), 10);
-            document.getElementById('edit-menu-id').value = ''; document.getElementById('edit-menu-name').value = '';
-            document.getElementById('btn-delete-menu').classList.add('hidden'); renderIcons('fa-circle');
+            
+            // Reset state
+            document.getElementById('edit-menu-id').value = ''; 
+            document.getElementById('edit-menu-name').value = '';
+            document.getElementById('edit-menu-target').value = '';
+            document.getElementById('edit-menu-url').value = '';
+            document.getElementById('edit-menu-status').checked = true;
+            document.getElementById('url-input-container').classList.add('hidden');
+            document.getElementById('btn-delete-menu').classList.add('hidden'); 
+            
+            renderIcons('fa-circle');
         }
-        function closeMenuModal() { document.getElementById('modal-edit-menu').classList.add('opacity-0'); document.getElementById('modal-edit-menu-content').classList.add('translate-y-full'); setTimeout(()=>document.getElementById('modal-edit-menu').classList.add('hidden'),300); }
+
+        function closeMenuModal() { 
+            document.getElementById('modal-edit-menu').classList.add('opacity-0'); document.getElementById('modal-edit-menu-content').classList.add('translate-y-full'); setTimeout(()=>document.getElementById('modal-edit-menu').classList.add('hidden'),300); 
+        }
+
         function renderIcons(sel) {
             let ht = ''; PRESET_ICONS.forEach(i => { ht += `<div onclick="document.getElementById('edit-menu-icon').value='${i}'; renderIcons('${i}')" class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-lg border-2 cursor-pointer transition ${i===sel?'border-primary text-primary bg-blue-50':'border-gray-100 text-gray-400'}"><i class="fas ${i}"></i></div>`; });
             document.getElementById('admin-icon-presets').innerHTML = ht; document.getElementById('edit-menu-icon').value = sel;
         }
+
         function editMenu(id) {
-            let m = appDB.menuItems.find(x=>x.id===id); if(m){ openMenuModal(); document.getElementById('modal-menu-title').innerText='Edit Menu'; document.getElementById('edit-menu-id').value=m.id; document.getElementById('edit-menu-name').value=m.title; document.getElementById('edit-menu-color').value=m.color; document.getElementById('edit-menu-target').value=m.target; renderIcons(m.icon); document.getElementById('btn-delete-menu').classList.remove('hidden'); }
+            let m = appDB.menuItems.find(x=>x.id===id); if(m){ 
+                openMenuModal(); document.getElementById('modal-menu-title').innerText='Edit Menu'; 
+                document.getElementById('edit-menu-id').value=m.id; 
+                document.getElementById('edit-menu-name').value=m.title; 
+                document.getElementById('edit-menu-color').value=m.color; 
+                document.getElementById('edit-menu-target').value=m.target || ''; 
+                
+                if(m.target === 'url') {
+                    document.getElementById('edit-menu-url').value = m.url || '';
+                    document.getElementById('url-input-container').classList.remove('hidden');
+                }
+                
+                document.getElementById('edit-menu-status').checked = m.isActive !== false;
+
+                renderIcons(m.icon); document.getElementById('btn-delete-menu').classList.remove('hidden'); 
+            }
         }
+
         function saveMenu() {
-            let id = document.getElementById('edit-menu-id').value, title = document.getElementById('edit-menu-name').value, icon = document.getElementById('edit-menu-icon').value, color = document.getElementById('edit-menu-color').value, target = document.getElementById('edit-menu-target').value;
+            let id = document.getElementById('edit-menu-id').value;
+            let title = document.getElementById('edit-menu-name').value;
+            let icon = document.getElementById('edit-menu-icon').value;
+            let color = document.getElementById('edit-menu-color').value;
+            let target = document.getElementById('edit-menu-target').value;
+            let url = document.getElementById('edit-menu-url').value;
+            let isActive = document.getElementById('edit-menu-status').checked;
+
             if(!title) return;
-            if(id) { let ix = appDB.menuItems.findIndex(x=>x.id==id); appDB.menuItems[ix] = {id:parseInt(id), title, icon, color, target}; }
-            else { appDB.menuItems.push({id:Date.now(), title, icon, color, target}); }
-            localStorage.setItem('adminMenu', JSON.stringify(appDB.menuItems)); closeMenuModal(); showScreen('screen-admin-dashboard');
+            
+            if(id) { 
+                let ix = appDB.menuItems.findIndex(x=>x.id==id); 
+                appDB.menuItems[ix] = {id:parseInt(id), title, icon, color, target, url, isActive}; 
+            } else { 
+                appDB.menuItems.push({id:Date.now(), title, icon, color, target, url, isActive}); 
+            }
+            
+            localStorage.setItem('adminMenu', JSON.stringify(appDB.menuItems)); 
+            closeMenuModal(); showScreen('screen-admin-dashboard');
         }
+
         function deleteMenu() { appDB.menuItems = appDB.menuItems.filter(x=>x.id != document.getElementById('edit-menu-id').value); localStorage.setItem('adminMenu', JSON.stringify(appDB.menuItems)); closeMenuModal(); showScreen('screen-admin-dashboard'); }
 
         function showMessageBox(ti,te,ic,icb,btn,btnc) {
